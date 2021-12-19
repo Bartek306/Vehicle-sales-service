@@ -45,7 +45,7 @@ public class UserService {
         userModel.setPassword(passwordEncoder.encode(registerDto.getPassword()));
         userModel.setLogin(registerDto.getLogin());
         userModel.setCreatedAt(LocalDateTime.now().toString());
-        userModel.setActive(false);
+        userModel.setActive(true);
         userRepository.save(userModel);
         return userModel;
     }
