@@ -1,13 +1,14 @@
 package com.example.demo.service;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.example.demo.dto.LoginDto;
 import com.example.demo.dto.LoginResponseDto;
 import com.example.demo.dto.RegisterDto;
 import com.example.demo.exception.UserException;
 import com.example.demo.model.UserModel;
 import com.example.demo.repository.UserRepository;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -66,10 +67,10 @@ public class UserService {
     }
 
     private String generateToken(UserModel userModel){
-        return Jwts.builder().setSubject(userModel.getEmail())
-                .setIssuedAt(new Date())
-                .signWith(SignatureAlgorithm.HS512, this.jwtSecret)
-                .compact();
+        return JWT.create()
+                .withSubject(userModel.getLogin())
+                .withExpiresAt(new Date(System.currentTimeMillis() +10 * 60 *1000))
+                .sign(Algorithm.HMAC256("secret".getBytes()));
     }
 
 
