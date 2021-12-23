@@ -7,6 +7,7 @@ import com.example.demo.model.UserModel;
 import com.example.demo.security.WebSecurityConfig;
 import com.example.demo.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -26,9 +27,14 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public  ResponseEntity<LoginResponseDto> login(@RequestBody LoginDto loginDto){
+    public  ResponseEntity<String> login(@RequestBody LoginDto loginDto){
         return ResponseEntity.ok(userService.login(loginDto));
 
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<String> update(@RequestBody LoginDto loginDto){
+        return ResponseEntity.ok(userService.update(loginDto));
     }
 
 }

@@ -3,16 +3,18 @@ package com.example.demo.service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.example.demo.dto.LoginDto;
-import com.example.demo.dto.LoginResponseDto;
 import com.example.demo.dto.RegisterDto;
 import com.example.demo.exception.UserException;
 import com.example.demo.model.UserModel;
 import com.example.demo.repository.UserRepository;
 
+import com.example.demo.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,9 +30,11 @@ public class UserService {
     @Autowired
     private final PasswordEncoder passwordEncoder;
 
-    private final String jwtSecret = "secretJWt";
+    @Autowired
+    JwtUtils jwtUtils;
 
     private final AuthenticationManager authenticationManager;
+
 
     @Transactional
     public UserModel registerUser(RegisterDto registerDto){
@@ -51,20 +55,23 @@ public class UserService {
         return userModel;
     }
     @Transactional
-    public LoginResponseDto login(LoginDto loginDto){
-        var authentication = authenticationManager.authenticate(
+    public String login(LoginDto loginDto){
+        Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getLogin(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        var user = (UserModel) authentication.getPrincipal();
+        String jwt = jwtUtils.generateJwtToken(authentication);
+        UserModel user = (UserModel) authentication.getPrincipal();
         System.out.println(user);
         if(user == null){
             throw new UserException("Email or password is invalid");
         }
-        LoginResponseDto loginResponseDto = new LoginResponseDto();
-        loginResponseDto.setId(user.getId());
-        loginResponseDto.setToken(generateToken(user));
-        return loginResponseDto;
+        return jwt;
     }
+
+    public String update(LoginDto loginDto) {
+        return loginDto.getLogin();
+    }
+
 
     private String generateToken(UserModel userModel){
         return JWT.create()
@@ -72,6 +79,7 @@ public class UserService {
                 .withExpiresAt(new Date(System.currentTimeMillis() +10 * 60 *1000))
                 .sign(Algorithm.HMAC256("secret".getBytes()));
     }
+
 
 
 }
