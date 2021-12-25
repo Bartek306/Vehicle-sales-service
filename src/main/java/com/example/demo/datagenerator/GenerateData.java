@@ -1,13 +1,7 @@
 package com.example.demo.datagenerator;
 
-import com.example.demo.model.Announcement;
-import com.example.demo.model.City;
-import com.example.demo.model.UserModel;
-import com.example.demo.model.Voivodeship;
-import com.example.demo.repository.AnnouncementRepository;
-import com.example.demo.repository.CityRepository;
-import com.example.demo.repository.UserRepository;
-import com.example.demo.repository.VoivodeshipRepository;
+import com.example.demo.model.*;
+import com.example.demo.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -35,20 +29,13 @@ public class GenerateData {
     private final CityRepository cityRepository;
     private final AnnouncementRepository announcementRepository;
     private final UserRepository userRepository;
+    private final BrandRepository brandRepository;
 
     @Autowired
     private final PasswordEncoder passwordEncoder;
 
     public void generateCityAndVoivodeship(){
-        JSONArray jsonArray = null;
-        try {
-            JSONParser jsonParser = new JSONParser();
-            Resource resource = new ClassPathResource("cityAndVoivodeship.json");
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(new BufferedReader(new InputStreamReader(resource.getInputStream())));
-            jsonArray = (JSONArray) jsonParser.parse(jsonObject.get("data").toString());
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
+        JSONArray jsonArray = getArray("cityAndVoivodeship.json");
 
         for (Object o : Objects.requireNonNull(jsonArray)) {
             JSONObject jsonObject = (JSONObject) o;
@@ -66,6 +53,19 @@ public class GenerateData {
             city.setName(jsonObject.get("city").toString());
             cityRepository.save(city);
         }
+    }
+
+    private JSONArray getArray(String filename){
+        JSONArray jsonArray = null;
+        try {
+            JSONParser jsonParser = new JSONParser();
+            Resource resource = new ClassPathResource(filename);
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(new BufferedReader(new InputStreamReader(resource.getInputStream())));
+            jsonArray = (JSONArray) jsonParser.parse(jsonObject.get("data").toString());
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+        return jsonArray;
     }
 
     public void generateAnnouncement(){
@@ -92,4 +92,13 @@ public class GenerateData {
         userRepository.save(userModel);
     }
 
+    public void generateBrand(){
+        JSONArray jsonArray = getArray("brand.json");
+        for(Object o: Objects.requireNonNull(jsonArray)){
+            JSONObject jsonObject = (JSONObject) o;
+            Brand brand = new Brand();
+            brand.setName(jsonObject.get("name").toString());
+            brandRepository.save(brand);
+        }
+    }
 }

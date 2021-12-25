@@ -7,8 +7,11 @@ import com.example.demo.model.City;
 import com.example.demo.repository.AnnouncementRepository;
 import com.example.demo.repository.CityRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.specification.AnnouncementSpecification;
+import com.example.demo.specification.SearchCriteria;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -42,6 +45,15 @@ public class AnnouncementService {
 
     public List<ResAnnouncementDto> getAnnouncementByType(String type){
         List<Announcement> announcementList = announcementRepository.findAllByType(type);
+        return mapList(announcementList);
+    }
+
+    public List<ResAnnouncementDto>getByCityAndPrice(String city, Float price){
+        AnnouncementSpecification announcementSpecification =
+                new AnnouncementSpecification(new SearchCriteria("city", ":", cityRepository.findByName(city).get()));
+        AnnouncementSpecification announcementSpecification1 =
+                new AnnouncementSpecification(new SearchCriteria("price", ">", price));
+        List<Announcement> announcementList = announcementRepository.findAll(Specification.where(announcementSpecification).and(announcementSpecification1));
         return mapList(announcementList);
     }
 

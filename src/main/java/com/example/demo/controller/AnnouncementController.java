@@ -30,8 +30,13 @@ public class AnnouncementController {
 
     @GetMapping("/type")
     public ResponseEntity<List<ResAnnouncementDto>> getTypeAnnouncement(@RequestParam String type){
-        System.out.println(type);
         return ResponseEntity.ok(announcementService.getAnnouncementByType(type));
     }
+
+    @GetMapping("/get")
+    public ResponseEntity<List<ResAnnouncementDto>> get(@RequestParam String city, @RequestParam Float price){
+        return ResponseEntity.ok(announcementService.getByCityAndPrice(city, price));
+    }
+
 
 }

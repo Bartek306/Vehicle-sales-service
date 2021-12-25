@@ -21,6 +21,9 @@ public class Announcement {
     private Float price;
 
     @ManyToOne
+    private Brand brand;
+
+    @ManyToOne
     private UserModel owner;
 
     @ManyToOne

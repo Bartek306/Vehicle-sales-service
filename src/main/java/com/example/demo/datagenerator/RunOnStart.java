@@ -18,5 +18,6 @@ public class RunOnStart implements ApplicationRunner {
         generateData.generateUser();
         generateData.generateCityAndVoivodeship();
         generateData.generateAnnouncement();
+        generateData.generateBrand();
     }
 }

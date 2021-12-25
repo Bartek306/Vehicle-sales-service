@@ -36,7 +36,6 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
         return ResponseEntity.ok(userService.login(loginDto));
-
     }
 
     @PostMapping("/update")

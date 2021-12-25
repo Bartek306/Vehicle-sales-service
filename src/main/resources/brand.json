@@ -1,0 +1,58 @@
+{
+  "data": [
+    {
+      "name": "BMW"
+    },
+    {
+      "name": "Audi"
+    },
+    {
+      "name": "Citroen"
+    },
+    {
+      "name": "Dacia"
+    },
+    {
+      "name": "Fiat"
+    },
+    {
+      "name":"Ford"
+    },
+    {
+      "name": "Hyundai"
+    },
+    {
+      "name": "Kia"
+    },
+    {
+      "name": "Mercedes"
+    },
+    {
+      "name": "Nissan"
+    },
+    {
+      "name": "Opel"
+    },
+    {
+      "name": "Peugeot"
+    },
+    {
+      "name": "Renault"
+    },
+    {
+      "name": "Seat"
+    },
+    {
+      "name": "Skoda"
+    },
+    {
+      "name": "Toyota"
+    },
+    {
+      "name": "Volkswagen"
+    },
+    {
+      "name": "Volvo"
+    }
+  ]
+}
