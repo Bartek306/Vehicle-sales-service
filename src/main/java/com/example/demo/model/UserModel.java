@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,23 +11,41 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @ToString
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class UserModel implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer Id;
+    private Integer Id;
+
     @Size(min=3, max=16)
     @NotBlank(message = "Pole nie moze byc puste")
-    String login;
-    String password;
-    String email;
-    String createdAt;
-    Boolean active;
+
+    @NotBlank
+    private String login;
+    @NotBlank
+    private String password;
+    @NotBlank
+    private String email;
+    @NotBlank
+    private String createdAt;
+
+    private Boolean active;
+
+    @Size(min = 9, max = 9)
+    private String phoneNumber;
+
+    @OneToOne
+    private City city;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Announcement> announcements;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

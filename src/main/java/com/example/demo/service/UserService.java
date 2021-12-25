@@ -4,8 +4,11 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.example.demo.dto.LoginDto;
 import com.example.demo.dto.RegisterDto;
+import com.example.demo.dto.UpdateUserDto;
 import com.example.demo.exception.UserException;
+import com.example.demo.model.City;
 import com.example.demo.model.UserModel;
+import com.example.demo.repository.CityRepository;
 import com.example.demo.repository.UserRepository;
 
 import com.example.demo.utils.JwtUtils;
@@ -27,6 +30,7 @@ import java.util.Date;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final CityRepository cityRepository;
     @Autowired
     private final PasswordEncoder passwordEncoder;
 
@@ -68,18 +72,12 @@ public class UserService {
         return jwt;
     }
 
-    public String update(LoginDto loginDto) {
-        return loginDto.getLogin();
+    @Transactional
+    public UserModel update(UpdateUserDto updateUserDto, String owner) {
+        UserModel userModel = userRepository.findByLogin(owner).get();
+        userModel.setPhoneNumber(updateUserDto.getPhone());
+        userModel.setCity(cityRepository.findByName(updateUserDto.getCity()).get());
+        return userModel;
     }
-
-
-    private String generateToken(UserModel userModel){
-        return JWT.create()
-                .withSubject(userModel.getLogin())
-                .withExpiresAt(new Date(System.currentTimeMillis() +10 * 60 *1000))
-                .sign(Algorithm.HMAC256("secret".getBytes()));
-    }
-
-
 
 }

@@ -6,25 +6,30 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+
 @Entity
-@Getter
 @Setter
+@Getter
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
-
-public class City {
-
+public class Announcement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank
-    private String name;
+    private String type;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Voivodeship voivodeship;
+    private Float price;
 
-    @Override
-    public String toString(){
-        return name;
-    }
+    @ManyToOne
+    private UserModel owner;
+
+    @ManyToOne
+    private City city;
+
+    private String title;
+
+    private String description;
+
+
+
 }
