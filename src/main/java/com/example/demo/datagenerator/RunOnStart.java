@@ -16,8 +16,8 @@ public class RunOnStart implements ApplicationRunner {
     @Transactional
     public void run(ApplicationArguments args) throws Exception {
         generateData.generateUser();
+        generateData.generateBrand();
         generateData.generateCityAndVoivodeship();
         generateData.generateAnnouncement();
-        generateData.generateBrand();
     }
 }

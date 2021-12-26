@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -48,12 +49,29 @@ public class AnnouncementService {
         return mapList(announcementList);
     }
 
-    public List<ResAnnouncementDto>getByCityAndPrice(String city, Float price){
-        AnnouncementSpecification announcementSpecification =
-                new AnnouncementSpecification(new SearchCriteria("city", ":", cityRepository.findByName(city).get()));
-        AnnouncementSpecification announcementSpecification1 =
-                new AnnouncementSpecification(new SearchCriteria("price", ">", price));
-        List<Announcement> announcementList = announcementRepository.findAll(Specification.where(announcementSpecification).and(announcementSpecification1));
+    public List<ResAnnouncementDto>get(Map<String, Object> paramMap){
+        List<AnnouncementSpecification> announcementSpecifications = new ArrayList<>();
+        for(Map.Entry<String, Object > entry: paramMap.entrySet()){
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            String operation;
+            if(key.equals("maxPrice")) {
+                operation = "<";
+                key = "price";
+            }
+            else if(key.equals("minPrice")) {
+                operation = ">";
+                key = "price";
+            }
+            else
+                operation = ":";
+            announcementSpecifications.add(new AnnouncementSpecification(new SearchCriteria(key, operation, value)));
+        }
+        Specification<Announcement> specification = Specification.where(announcementSpecifications.get(0));
+        for(int i=1; i<announcementSpecifications.size(); i++){
+             specification = specification.and(announcementSpecifications.get(i));
+        }
+        List<Announcement> announcementList = announcementRepository.findAll(specification);
         return mapList(announcementList);
     }
 

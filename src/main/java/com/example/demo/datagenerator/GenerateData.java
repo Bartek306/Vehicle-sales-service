@@ -70,13 +70,16 @@ public class GenerateData {
 
     public void generateAnnouncement(){
         List<String> cities = List.of("Warszawa" ,"Kielce", "Krakow", "Krakow");
+        List<Brand> brands = brandRepository.findAll();
+        Random random = new Random();
         for(String city: cities){
             Announcement announcement = new Announcement();
             announcement.setOwner(userRepository.findByLogin("login").get());
             announcement.setType("CAR");
             announcement.setTitle("dsadasdas");
             announcement.setDescription("dsaadsdasdsadasdsa");
-            announcement.setPrice(new Random().nextFloat() * 100000);
+            announcement.setBrand(brands.get(random.nextInt(brands.size())));
+            announcement.setPrice(random.nextFloat() * 100000);
             announcement.setCity(cityRepository.findByName(city).get());
             announcementRepository.save(announcement);
         }
