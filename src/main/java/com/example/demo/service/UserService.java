@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.example.demo.dto.LoginDto;
 import com.example.demo.dto.RegisterDto;
+import com.example.demo.dto.TokenDto;
 import com.example.demo.dto.UpdateUserDto;
 import com.example.demo.exception.UserException;
 import com.example.demo.model.City;
@@ -59,7 +60,7 @@ public class UserService {
         return userModel;
     }
     @Transactional
-    public String login(LoginDto loginDto){
+    public TokenDto login(LoginDto loginDto){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getLogin(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -69,7 +70,9 @@ public class UserService {
         if(user == null){
             throw new UserException("Email or password is invalid");
         }
-        return jwt;
+        TokenDto tokenDto = new TokenDto();
+        tokenDto.setToken(jwt);
+        return tokenDto;
     }
 
     @Transactional

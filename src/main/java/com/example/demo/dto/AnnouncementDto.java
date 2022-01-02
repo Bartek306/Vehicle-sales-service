@@ -1,6 +1,5 @@
 package com.example.demo.dto;
 
-import com.example.demo.model.Brand;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +12,6 @@ public class AnnouncementDto {
     private String title;
     private String description;
     private Float price;
-    private Brand brand;
+    private String brand;
 
 }

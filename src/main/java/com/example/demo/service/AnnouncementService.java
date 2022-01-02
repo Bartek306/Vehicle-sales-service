@@ -5,6 +5,7 @@ import com.example.demo.dto.ResAnnouncementDto;
 import com.example.demo.model.Announcement;
 import com.example.demo.model.City;
 import com.example.demo.repository.AnnouncementRepository;
+import com.example.demo.repository.BrandRepository;
 import com.example.demo.repository.CityRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.specification.AnnouncementSpecification;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,16 +27,19 @@ public class AnnouncementService {
     private final AnnouncementRepository announcementRepository;
     private final CityRepository cityRepository;
     private final UserRepository userRepository;
+    private final BrandRepository brandRepository;
     private final ModelMapper modelMapper;
 
     public ResAnnouncementDto create(AnnouncementDto announcementDto, String owner) {
         Announcement announcement = new Announcement();
         announcement.setTitle(announcementDto.getTitle());
+        announcement.setPrice(announcementDto.getPrice());
         announcement.setDescription(announcementDto.getDescription());
         announcement.setType(announcementDto.getType());
         announcement.setOwner(userRepository.findByLogin(owner).get());
         City city = cityRepository.findByName(announcementDto.getCity()).get();
         announcement.setCity(city);
+        announcement.setBrand(brandRepository.findByName(announcementDto.getBrand()).get());
         announcementRepository.save(announcement);
         return modelMapper.map(announcement, ResAnnouncementDto.class);
     }
@@ -81,5 +86,30 @@ public class AnnouncementService {
             resAnnouncementDtoList.add(modelMapper.map(announcement, ResAnnouncementDto.class));
         }
         return resAnnouncementDtoList;
+    }
+
+    @Transactional
+    public ResAnnouncementDto edit(Integer id, Map<String, Object> paramsMap) {
+        Announcement announcement = announcementRepository.findById(id).get();
+        for (Map.Entry<String, Object> entry : paramsMap.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            switch (key) {
+                case "price":
+                    announcement.setPrice(Float.parseFloat(String.valueOf(value)));
+                    System.out.println("price = " + value.toString());
+                    break;
+                case "city":
+                    announcement.setCity((City) value);
+                    break;
+                case "title":
+                    announcement.setTitle((String) value);
+                    break;
+                case "description":
+                    announcement.setDescription((String) value);
+                    break;
+            }
+        }
+        return modelMapper.map(announcement, ResAnnouncementDto.class);
     }
 }

@@ -1,23 +1,17 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.LoginDto;
-import com.example.demo.dto.LoginResponseDto;
 import com.example.demo.dto.RegisterDto;
+import com.example.demo.dto.TokenDto;
 import com.example.demo.dto.UpdateUserDto;
 import com.example.demo.model.UserModel;
 import com.example.demo.security.WebSecurityConfig;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.JwtUtils;
 import lombok.AllArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Import({ WebSecurityConfig.class })
 @RestController
@@ -34,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<TokenDto> login(@RequestBody LoginDto loginDto) {
         return ResponseEntity.ok(userService.login(loginDto));
     }
 

@@ -32,11 +32,6 @@ public class AnnouncementController {
         return ResponseEntity.ok(announcementService.getUserAnnouncement(JwtUtils.getUsernameFromHeader()));
     }
 
-    @GetMapping("/type")
-    public ResponseEntity<List<ResAnnouncementDto>> getTypeAnnouncement(@RequestParam String type){
-        return ResponseEntity.ok(announcementService.getAnnouncementByType(type));
-    }
-
     @GetMapping("/get")
     public ResponseEntity<List<ResAnnouncementDto>> get(@RequestParam(required = false) String city,
                                                         @RequestParam(required = false) String type,
@@ -50,6 +45,21 @@ public class AnnouncementController {
         addToMap("minPrice", minPrice, paramsMap);
         addToMap("brand", brandService.getBrandFromName(brand), paramsMap);
         return ResponseEntity.ok(announcementService.get(paramsMap));
+    }
+
+    @PutMapping("/edit")
+    public ResponseEntity<ResAnnouncementDto> edit(@RequestParam Integer id,
+                                                   @RequestParam(required = false) String title,
+                                                   @RequestParam(required = false) String description,
+                                                   @RequestParam(required = false) String price,
+                                                   @RequestParam(required = false) String city){
+        Map<String, Object> paramsMap = new HashMap<>();
+        addToMap("city", cityService.getCityFromName(city), paramsMap);
+        addToMap("title", title, paramsMap);
+        addToMap("description", description, paramsMap);
+        addToMap("price", price, paramsMap);
+        return ResponseEntity.ok(announcementService.edit(id, paramsMap));
+
     }
 
     private static void addToMap(String key, Object value, Map<String, Object> map){
