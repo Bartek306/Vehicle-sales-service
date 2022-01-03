@@ -41,8 +41,11 @@ public class UserModel implements UserDetails {
     @Size(min = 9, max = 9)
     private String phoneNumber;
 
-    @OneToOne
+    @ManyToOne
     private City city;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private History history;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Announcement> announcements;

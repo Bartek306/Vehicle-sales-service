@@ -30,7 +30,7 @@ public class GenerateData {
     private final AnnouncementRepository announcementRepository;
     private final UserRepository userRepository;
     private final BrandRepository brandRepository;
-
+    private final HistoryRepository historyRepository;
     @Autowired
     private final PasswordEncoder passwordEncoder;
 
@@ -87,12 +87,16 @@ public class GenerateData {
 
     public void generateUser(){
         UserModel userModel = new UserModel();
+        History history = new History();
         userModel.setActive(true);
         userModel.setCreatedAt(LocalDateTime.now().toString());
         userModel.setEmail("email@email.com");
         userModel.setLogin("login");
         userModel.setPassword(passwordEncoder.encode("password"));
-        userRepository.save(userModel);
+        userModel.setHistory(history);
+        history.setOwner(userModel);
+        historyRepository.save(history);
+        userRepository.saveAndFlush(userModel);
     }
 
     public void generateBrand(){
@@ -103,5 +107,15 @@ public class GenerateData {
             brand.setName(jsonObject.get("name").toString());
             brandRepository.save(brand);
         }
+    }
+
+    public void generateHistory(){
+        Announcement announcement = announcementRepository.findById(1).get();
+        Announcement announcement1 = announcementRepository.findById(2).get();
+        UserModel userModel = userRepository.findByLogin("login").get();
+        System.out.println(userModel.getHistory());
+        userModel.getHistory().add(announcement);
+        userModel.getHistory().add(announcement1);
+
     }
 }
