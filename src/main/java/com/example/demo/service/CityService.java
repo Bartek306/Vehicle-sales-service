@@ -5,6 +5,9 @@ import com.example.demo.repository.CityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CityService {
@@ -14,4 +17,12 @@ public class CityService {
         return cityRepository.findByName(name).get();
     }
 
+    public List<String> get() {
+        List<City> cityList = cityRepository.findAll();
+        List<String> names = new ArrayList<>();
+        for(City city: cityList){
+            names.add(city.getName());
+        }
+        return names;
+    }
 }
