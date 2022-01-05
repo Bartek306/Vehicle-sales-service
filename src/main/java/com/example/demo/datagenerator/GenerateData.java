@@ -81,6 +81,7 @@ public class GenerateData {
             announcement.setBrand(brands.get(random.nextInt(brands.size())));
             announcement.setPrice(random.nextFloat() * 100000);
             announcement.setCity(cityRepository.findByName(city).get());
+            announcement.setViewed(0);
             announcementRepository.save(announcement);
         }
     }

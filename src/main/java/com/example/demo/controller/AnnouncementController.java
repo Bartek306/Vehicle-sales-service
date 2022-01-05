@@ -31,7 +31,10 @@ public class AnnouncementController {
     public ResponseEntity<List<ResAnnouncementDto>> getUserAnnouncement(){
         return ResponseEntity.ok(announcementService.getUserAnnouncement(JwtUtils.getUsernameFromHeader()));
     }
-
+    @GetMapping("/get_by_id")
+    public ResponseEntity<ResAnnouncementDto> getById(@RequestParam Integer id){
+        return ResponseEntity.ok(announcementService.getById(id));
+    }
     @GetMapping("/get")
     public ResponseEntity<List<ResAnnouncementDto>> get(@RequestParam(required = false) String city,
                                                         @RequestParam(required = false) String type,
@@ -59,6 +62,12 @@ public class AnnouncementController {
         addToMap("description", description, paramsMap);
         addToMap("price", price, paramsMap);
         return ResponseEntity.ok(announcementService.edit(id, paramsMap));
+
+    }
+
+    @PutMapping("/add_viewed")
+    public ResponseEntity<ResAnnouncementDto> add_viewed(@RequestParam Integer id){
+        return ResponseEntity.ok(announcementService.add_viewed(id));
 
     }
 

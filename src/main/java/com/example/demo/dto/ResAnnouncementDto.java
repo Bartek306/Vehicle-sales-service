@@ -15,4 +15,7 @@ public class ResAnnouncementDto{
     private String description;
     private Float price;
     private Brand brand;
+    private String type;
+    private Integer viewed;
+
 }

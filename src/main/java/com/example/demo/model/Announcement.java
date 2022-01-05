@@ -33,6 +33,12 @@ public class Announcement {
 
     private String description;
 
+    private Integer viewed;
+
+    public void increaseViewed(){
+        this.viewed ++;
+    }
+
 
 
 }

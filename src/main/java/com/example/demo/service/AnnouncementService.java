@@ -4,10 +4,8 @@ import com.example.demo.dto.AnnouncementDto;
 import com.example.demo.dto.ResAnnouncementDto;
 import com.example.demo.model.Announcement;
 import com.example.demo.model.City;
-import com.example.demo.repository.AnnouncementRepository;
-import com.example.demo.repository.BrandRepository;
-import com.example.demo.repository.CityRepository;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.model.History;
+import com.example.demo.repository.*;
 import com.example.demo.specification.AnnouncementSpecification;
 import com.example.demo.specification.SearchCriteria;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +37,7 @@ public class AnnouncementService {
         announcement.setOwner(userRepository.findByLogin(owner).get());
         City city = cityRepository.findByName(announcementDto.getCity()).get();
         announcement.setCity(city);
+        announcement.setViewed(0);
         announcement.setBrand(brandRepository.findByName(announcementDto.getBrand()).get());
         announcementRepository.save(announcement);
         return modelMapper.map(announcement, ResAnnouncementDto.class);
@@ -110,6 +109,18 @@ public class AnnouncementService {
                     break;
             }
         }
+        return modelMapper.map(announcement, ResAnnouncementDto.class);
+    }
+
+    @Transactional
+    public ResAnnouncementDto add_viewed(Integer id) {
+        Announcement announcement = announcementRepository.getOne(id);
+        announcement.increaseViewed();
+        return modelMapper.map(announcement, ResAnnouncementDto.class);
+    }
+
+    public ResAnnouncementDto getById(Integer id) {
+        Announcement announcement = announcementRepository.getOne(id);
         return modelMapper.map(announcement, ResAnnouncementDto.class);
     }
 }
