@@ -6,10 +6,11 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
 @Getter
 @Setter
 @Entity
-public class History {
+public class Favourite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -21,6 +22,10 @@ public class History {
     private List<Announcement> announcements = new ArrayList<>();
 
     public void add(Announcement announcement){
-        announcements.add(0, announcement);
+        announcements.add(announcement);
+    }
+
+    public void remove(Announcement announcement){
+        announcements.remove(announcement);
     }
 }

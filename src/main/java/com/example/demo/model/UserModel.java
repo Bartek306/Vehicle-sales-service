@@ -47,6 +47,9 @@ public class UserModel implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private History history;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Favourite favourite;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Announcement> announcements;
 

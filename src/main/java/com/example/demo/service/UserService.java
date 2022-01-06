@@ -8,8 +8,12 @@ import com.example.demo.dto.TokenDto;
 import com.example.demo.dto.UpdateUserDto;
 import com.example.demo.exception.UserException;
 import com.example.demo.model.City;
+import com.example.demo.model.Favourite;
+import com.example.demo.model.History;
 import com.example.demo.model.UserModel;
 import com.example.demo.repository.CityRepository;
+import com.example.demo.repository.FavouriteRepository;
+import com.example.demo.repository.HistoryRepository;
 import com.example.demo.repository.UserRepository;
 
 import com.example.demo.utils.JwtUtils;
@@ -34,7 +38,8 @@ public class UserService {
     private final CityRepository cityRepository;
     @Autowired
     private final PasswordEncoder passwordEncoder;
-
+    private final FavouriteRepository favouriteRepository;
+    private final HistoryRepository historyRepository;
     @Autowired
     JwtUtils jwtUtils;
 
@@ -51,12 +56,20 @@ public class UserService {
         if(userRepository.findByLogin(registerDto.getLogin()).orElse(null) != null){
             throw new UserException("There is user with these login");
         }
+        History history = new History();
+        Favourite favourite = new Favourite();
         userModel.setEmail(registerDto.getEmail());
         userModel.setPassword(passwordEncoder.encode(registerDto.getPassword()));
         userModel.setLogin(registerDto.getLogin());
         userModel.setCreatedAt(LocalDateTime.now().toString());
         userModel.setActive(true);
+        history.setOwner(userModel);
+        userModel.setHistory(history);
+        favourite.setOwner(userModel);
+        userModel.setFavourite(favourite);
         userRepository.save(userModel);
+        favouriteRepository.save(favourite);
+        historyRepository.save(history);
         return userModel;
     }
     @Transactional

@@ -113,7 +113,7 @@ public class AnnouncementService {
     }
 
     @Transactional
-    public ResAnnouncementDto add_viewed(Integer id) {
+    public ResAnnouncementDto addViewed(Integer id) {
         Announcement announcement = announcementRepository.getOne(id);
         announcement.increaseViewed();
         return modelMapper.map(announcement, ResAnnouncementDto.class);
@@ -122,5 +122,12 @@ public class AnnouncementService {
     public ResAnnouncementDto getById(Integer id) {
         Announcement announcement = announcementRepository.getOne(id);
         return modelMapper.map(announcement, ResAnnouncementDto.class);
+    }
+
+    public Boolean checkOwnership(Integer id, String owner) {
+        Announcement announcement = announcementRepository.getOne(id);
+        return announcement.getOwner().equals(userRepository.findByLogin(owner).get());
+
+
     }
 }

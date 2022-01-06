@@ -31,6 +31,7 @@ public class GenerateData {
     private final UserRepository userRepository;
     private final BrandRepository brandRepository;
     private final HistoryRepository historyRepository;
+    private final FavouriteRepository favouriteRepository;
     @Autowired
     private final PasswordEncoder passwordEncoder;
 
@@ -84,20 +85,52 @@ public class GenerateData {
             announcement.setViewed(0);
             announcementRepository.save(announcement);
         }
+
+        for(String city: cities){
+            Announcement announcement = new Announcement();
+            announcement.setOwner(userRepository.findByLogin("testowy").get());
+            announcement.setType("CAR");
+            announcement.setTitle("elo");
+            announcement.setDescription("dsaadsdasdsadasdsa");
+            announcement.setBrand(brands.get(random.nextInt(brands.size())));
+            announcement.setPrice(random.nextFloat() * 100000);
+            announcement.setCity(cityRepository.findByName(city).get());
+            announcement.setViewed(0);
+            announcementRepository.save(announcement);
+        }
     }
 
     public void generateUser(){
         UserModel userModel = new UserModel();
         History history = new History();
+        Favourite favourite = new Favourite();
         userModel.setActive(true);
         userModel.setCreatedAt(LocalDateTime.now().toString());
         userModel.setEmail("email@email.com");
         userModel.setLogin("login");
         userModel.setPassword(passwordEncoder.encode("password"));
         userModel.setHistory(history);
+        userModel.setFavourite(favourite);
         history.setOwner(userModel);
+        favourite.setOwner(userModel);
         historyRepository.save(history);
+        favouriteRepository.save(favourite);
         userRepository.saveAndFlush(userModel);
+
+        UserModel userModel1 = new UserModel();
+        History history1 = new History();
+        Favourite favourite1 = new Favourite();
+        userModel1.setActive(true);
+        userModel1.setCreatedAt(LocalDateTime.now().toString());
+        userModel1.setEmail("test@email.com");
+        userModel1.setLogin("testowy");
+        userModel1.setPassword(passwordEncoder.encode("password"));
+        userModel1.setHistory(history1);
+        history1.setOwner(userModel1);
+        favourite1.setOwner(userModel1);
+        historyRepository.save(history1);
+        userRepository.saveAndFlush(userModel1);
+        favouriteRepository.save(favourite1);
     }
 
     public void generateBrand(){

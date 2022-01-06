@@ -66,15 +66,20 @@ public class AnnouncementController {
     }
 
     @PutMapping("/add_viewed")
-    public ResponseEntity<ResAnnouncementDto> add_viewed(@RequestParam Integer id){
-        return ResponseEntity.ok(announcementService.add_viewed(id));
-
+    public ResponseEntity<ResAnnouncementDto> addViewed(@RequestParam Integer id){
+        return ResponseEntity.ok(announcementService.addViewed(id));
     }
 
+    @GetMapping("check_ownership")
+    public ResponseEntity<Boolean> checkOwnership(@RequestParam Integer id){
+        return ResponseEntity.ok(announcementService.checkOwnership(id, JwtUtils.getUsernameFromHeader()));
+    }
+
+
     private static void addToMap(String key, Object value, Map<String, Object> map){
-        if(value != null){
-            map.put(key, value);
-        }
+    if(value != null){
+        map.put(key, value);
+    }
     }
 
 }
