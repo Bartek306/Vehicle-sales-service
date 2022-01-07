@@ -23,10 +23,10 @@ public class ImageService {
     private final AnnouncementRepository announcementRepository;
 
     @Transactional
-    public String upload(MultipartFile file) throws IOException {
-        //Announcement announcement = announcementRepository.getOne(id);
+    public String upload(MultipartFile file, Integer id) throws IOException {
+        Announcement announcement = announcementRepository.getOne(id);
         Image image = new Image();
-        //image.setAnnouncement(announcement);
+        image.setAnnouncement(announcement);
         image.setName("sdsaasd");
         image.setBytes(compressBytes(file.getBytes()));
         imageRepository.save(image);
