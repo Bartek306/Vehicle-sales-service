@@ -26,6 +26,9 @@ public class Announcement {
     @ManyToOne
     private UserModel owner;
 
+    @OneToOne
+    private Image image;
+
     @ManyToOne
     private City city;
 
