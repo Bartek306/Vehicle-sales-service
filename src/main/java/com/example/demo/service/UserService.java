@@ -24,6 +24,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,11 +90,21 @@ public class UserService {
     }
 
     @Transactional
-    public UserModel update(UpdateUserDto updateUserDto, String owner) {
+    public String update(String phone, String name, String owner) {
         UserModel userModel = userRepository.findByLogin(owner).get();
-        userModel.setPhoneNumber(updateUserDto.getPhone());
-        userModel.setCity(cityRepository.findByName(updateUserDto.getCity()).get());
-        return userModel;
+        userModel.setPhoneNumber(phone);
+        userModel.setCity(cityRepository.findByName(name).get());
+        return "OK";
     }
 
+    public String getCity(String login) {
+        UserModel userModel = userRepository.findByLogin(login).get();
+        if(userModel.getCity() != null){
+            return userModel.getCity().getName();
+        }
+        else {
+            return "none";
+        }
+
+    }
 }

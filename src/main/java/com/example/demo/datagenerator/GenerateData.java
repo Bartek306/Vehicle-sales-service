@@ -13,9 +13,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -69,20 +67,25 @@ public class GenerateData {
         return jsonArray;
     }
 
-    public void generateAnnouncement(){
+    public void generateAnnouncement() throws FileNotFoundException {
         List<String> cities = List.of("Warszawa" ,"Kielce", "Krakow", "Krakow");
         List<Brand> brands = brandRepository.findAll();
         Random random = new Random();
+        FileInputStream fileInputStream = new FileInputStream("src/main/resources/error.jpg");
         for(String city: cities){
             Announcement announcement = new Announcement();
             announcement.setOwner(userRepository.findByLogin("login").get());
-            announcement.setType("CAR");
+            announcement.setType("Auto");
             announcement.setTitle("dsadasdas");
             announcement.setDescription("dsaadsdasdsadasdsa");
             announcement.setBrand(brands.get(random.nextInt(brands.size())));
             announcement.setPrice(random.nextFloat() * 100000);
             announcement.setCity(cityRepository.findByName(city).get());
             announcement.setViewed(0);
+            announcement.setYear(random.ints(1980, 2022).findFirst().getAsInt());
+            announcement.setModel("dsa");
+            announcement.setPower(random.ints(75, 290).findFirst().getAsInt());
+            announcement.setMileage(random.ints(5000, 300000).findFirst().getAsInt());
             announcementRepository.save(announcement);
         }
 

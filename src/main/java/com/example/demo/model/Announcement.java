@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
@@ -26,7 +27,7 @@ public class Announcement {
     @ManyToOne
     private UserModel owner;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Image image;
 
     @ManyToOne
@@ -37,6 +38,21 @@ public class Announcement {
     private String description;
 
     private Integer viewed;
+
+    private Integer year;
+
+    private String model;
+
+    @Column(nullable = true)
+    private Integer power;
+
+    @Column(nullable = true)
+    private Integer mileage;
+
+
+    private boolean firstOwner = false;
+
+    private boolean damaged = false;
 
     public void increaseViewed(){
         this.viewed ++;

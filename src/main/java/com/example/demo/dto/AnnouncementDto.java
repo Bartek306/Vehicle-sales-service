@@ -13,5 +13,11 @@ public class AnnouncementDto {
     private String description;
     private Float price;
     private String brand;
+    private Integer year;
+    private Integer power;
+    private String model;
+    private Integer mileage;
+    private boolean firstOwner;
+    private boolean damaged;
 
 }

@@ -16,7 +16,7 @@ public class Image {
 
     private String name;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Announcement announcement;
 
     private byte[] bytes;

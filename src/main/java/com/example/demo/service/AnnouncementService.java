@@ -39,6 +39,12 @@ public class AnnouncementService {
         announcement.setCity(city);
         announcement.setViewed(0);
         announcement.setBrand(brandRepository.findByName(announcementDto.getBrand()).get());
+        announcement.setYear(announcementDto.getYear());
+        announcement.setModel(announcementDto.getModel());
+        announcement.setPower(announcementDto.getPower());
+        announcement.setMileage(announcementDto.getMileage());
+        announcement.setDamaged(announcementDto.isDamaged());
+        announcement.setFirstOwner(announcementDto.isFirstOwner());
         announcementRepository.save(announcement);
         return modelMapper.map(announcement, ResAnnouncementDto.class);
     }

@@ -29,12 +29,12 @@ public class ImageService {
         image.setAnnouncement(announcement);
         image.setName("sdsaasd");
         image.setBytes(compressBytes(file.getBytes()));
-        imageRepository.save(image);
+        imageRepository.saveAndFlush(image);
+        announcementRepository.saveAndFlush(announcement);
         return "Ok";
 
 
     }
-
     public Image get(Integer id) throws DataFormatException {
         Image image;
         try {
