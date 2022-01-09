@@ -29,23 +29,16 @@ public class ImageService {
         image.setAnnouncement(announcement);
         image.setName("sdsaasd");
         image.setBytes(compressBytes(file.getBytes()));
+        announcement.setImage(image);
         imageRepository.saveAndFlush(image);
-        announcementRepository.saveAndFlush(announcement);
         return "Ok";
 
 
     }
-    public Image get(Integer id) throws DataFormatException {
-        Image image;
-        try {
-            image = imageRepository.findImageByAnnouncementId(id).get();
-        }catch (Exception e){
-            image = imageRepository.getOne(1);
-        }
-        Image img = new Image();
-        img.setName(image.getName());
-        img.setBytes(decompressBytes(image.getBytes()));
-        return img;
+    public Image get() throws DataFormatException {
+        Image image = imageRepository.getOne(1);
+        image.setBytes(decompressBytes(image.getBytes()));
+        return image;
     }
 
     private byte[] compressBytes(byte[] data) {

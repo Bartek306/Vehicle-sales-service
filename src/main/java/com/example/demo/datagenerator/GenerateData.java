@@ -10,8 +10,11 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -19,6 +22,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
+import java.util.zip.Deflater;
 
 @Component
 @RequiredArgsConstructor
@@ -30,6 +34,7 @@ public class GenerateData {
     private final BrandRepository brandRepository;
     private final HistoryRepository historyRepository;
     private final FavouriteRepository favouriteRepository;
+    private final ImageRepository imageRepository;
     @Autowired
     private final PasswordEncoder passwordEncoder;
 
@@ -67,12 +72,20 @@ public class GenerateData {
         return jsonArray;
     }
 
-    public void generateAnnouncement() throws FileNotFoundException {
+    public void generateAnnouncement() throws IOException {
         List<String> cities = List.of("Warszawa" ,"Kielce", "Krakow", "Krakow");
         List<Brand> brands = brandRepository.findAll();
         Random random = new Random();
         FileInputStream fileInputStream = new FileInputStream("src/main/resources/error.jpg");
+        MultipartFile multipartFile = new MockMultipartFile("error", "error.jpg",
+                "image/jpg", IOUtils.toByteArray(fileInputStream));
+        Image errorImage = new Image();
+        errorImage.setBytes(compressBytes(multipartFile.getBytes()));
+        imageRepository.save(errorImage);
         for(String city: cities){
+            Image image = new Image();
+            image.setName("123 " + city);
+            image.setBytes(compressBytes(multipartFile.getBytes()));
             Announcement announcement = new Announcement();
             announcement.setOwner(userRepository.findByLogin("login").get());
             announcement.setType("Auto");
@@ -86,9 +99,20 @@ public class GenerateData {
             announcement.setModel("dsa");
             announcement.setPower(random.ints(75, 290).findFirst().getAsInt());
             announcement.setMileage(random.ints(5000, 300000).findFirst().getAsInt());
+            image.setAnnouncement(announcement);
+            //1announcement.setImage(image);
             announcementRepository.save(announcement);
+            imageRepository.save(image);
         }
-
+         fileInputStream = new FileInputStream("src/main/resources/nissan.jpg");
+         multipartFile = new MockMultipartFile("error", "nissan.jpg",
+                "image/jpg", IOUtils.toByteArray(fileInputStream));
+        Image image = new Image();
+        image.setBytes(compressBytes(multipartFile.getBytes()));
+        Announcement nissanAnnouncement = announcementRepository.getOne(1);
+        image.setAnnouncement(nissanAnnouncement);
+        nissanAnnouncement.setImage(image);
+        imageRepository.save(image);
         for(String city: cities){
             Announcement announcement = new Announcement();
             announcement.setOwner(userRepository.findByLogin("testowy").get());
@@ -155,4 +179,23 @@ public class GenerateData {
         userModel.getHistory().add(announcement1);
 
     }
+    private byte[] compressBytes(byte[] data) {
+        Deflater deflater = new Deflater();
+        deflater.setInput(data);
+        deflater.finish();
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+        byte[] buffer = new byte[1024];
+        while (!deflater.finished()) {
+            int count = deflater.deflate(buffer);
+            outputStream.write(buffer, 0, count);
+        }
+        try {
+            outputStream.close();
+        } catch (IOException e) {
+        }
+
+        return outputStream.toByteArray();
+    }
+
 }

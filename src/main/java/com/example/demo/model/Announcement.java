@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,9 +26,11 @@ public class Announcement {
     private Brand brand;
 
     @ManyToOne
+    @JsonIgnore
     private UserModel owner;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne
+    @JsonIgnore
     private Image image;
 
     @ManyToOne

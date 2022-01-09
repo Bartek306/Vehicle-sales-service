@@ -24,7 +24,7 @@ public class ImageController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<Image> getImage (@RequestParam Integer id) throws DataFormatException {
-        return ResponseEntity.ok(imageService.get(id));
+    public ResponseEntity<Image> getImage () throws DataFormatException {
+        return ResponseEntity.ok(imageService.get());
     }
 }

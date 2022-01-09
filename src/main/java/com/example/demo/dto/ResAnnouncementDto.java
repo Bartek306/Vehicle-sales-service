@@ -14,7 +14,7 @@ public class ResAnnouncementDto{
     private String city;
     private String title;
     private String description;
-    private Image image;
+    private byte [] imageBytes;
     private String model;
     private Integer year;
     private Float price;

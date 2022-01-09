@@ -51,17 +51,8 @@ public class AnnouncementController {
     }
 
     @PutMapping("/edit")
-    public ResponseEntity<ResAnnouncementDto> edit(@RequestParam Integer id,
-                                                   @RequestParam(required = false) String title,
-                                                   @RequestParam(required = false) String description,
-                                                   @RequestParam(required = false) String price,
-                                                   @RequestParam(required = false) String city){
-        Map<String, Object> paramsMap = new HashMap<>();
-        addToMap("city", cityService.getCityFromName(city), paramsMap);
-        addToMap("title", title, paramsMap);
-        addToMap("description", description, paramsMap);
-        addToMap("price", price, paramsMap);
-        return ResponseEntity.ok(announcementService.edit(id, paramsMap));
+    public ResponseEntity<ResAnnouncementDto> edit(@RequestParam Integer id, @RequestBody AnnouncementDto announcementDto ){
+        return ResponseEntity.ok(announcementService.edit(id, announcementDto));
 
     }
 
