@@ -6,6 +6,7 @@ import com.example.demo.model.Favourite;
 import com.example.demo.repository.AnnouncementRepository;
 import com.example.demo.repository.FavouriteRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.utils.MyUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class FavouriteService {
     private final ModelMapper modelMapper;
     private final AnnouncementRepository announcementRepository;
     private final FavouriteRepository favouriteRepository;
+    private final MyUtils myUtils;
     @Transactional
     public void toggle(String login, Integer id) {
         Favourite favourite = favouriteRepository.findByOwnerLogin(login).get();
@@ -35,11 +37,7 @@ public class FavouriteService {
     public List<ResAnnouncementDto> get(String login){
         Favourite favourite = favouriteRepository.findByOwnerLogin(login).get();
         List<Announcement> list = favourite.getAnnouncements();
-        List<ResAnnouncementDto> resAnnouncementDtoList = new ArrayList<>();
-        for(Announcement announcement: list){
-            resAnnouncementDtoList.add(modelMapper.map(announcement, ResAnnouncementDto.class));
-        }
-        return resAnnouncementDtoList;
+        return myUtils.mapList(list);
     }
 
     public Boolean check(Integer id, String login) {

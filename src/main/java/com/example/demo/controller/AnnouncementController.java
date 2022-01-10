@@ -57,7 +57,7 @@ public class AnnouncementController {
     }
 
     @PutMapping("/add_viewed")
-    public ResponseEntity<ResAnnouncementDto> addViewed(@RequestParam Integer id){
+    public ResponseEntity<String> addViewed(@RequestParam Integer id){
         return ResponseEntity.ok(announcementService.addViewed(id));
     }
 

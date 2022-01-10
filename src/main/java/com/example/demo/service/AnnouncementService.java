@@ -114,19 +114,12 @@ public class AnnouncementService {
         return resAnnouncementDto;    }
 
     @Transactional
-    public ResAnnouncementDto addViewed(Integer id) {
+    public String addViewed(Integer id) {
         Announcement announcement = announcementRepository.getOne(id);
         announcement.increaseViewed();
-        ResAnnouncementDto  resAnnouncementDto =  modelMapper.map(announcement, ResAnnouncementDto.class);
-        if(announcement.getImage() == null){
-            resAnnouncementDto.setImageBytes(imageRepository.getOne(1).getBytes());
-        }
-        try {
-            resAnnouncementDto.setImageBytes(myUtils.decompressBytes(resAnnouncementDto.getImageBytes()));
-        } catch (DataFormatException e) {
-            e.printStackTrace();
-        }
-        return resAnnouncementDto;    }
+        System.out.println(announcement.getViewed());
+        return "OK";
+    }
 
     public ResAnnouncementDto getById(Integer id) {
         Announcement announcement = announcementRepository.getOne(id);
@@ -146,5 +139,4 @@ public class AnnouncementService {
         Announcement announcement = announcementRepository.getOne(id);
         return announcement.getOwner().equals(userRepository.findByLogin(owner).get());
     }
-
 }
