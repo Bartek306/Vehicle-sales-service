@@ -9,6 +9,7 @@ import com.example.demo.model.Image;
 import com.example.demo.repository.*;
 import com.example.demo.specification.AnnouncementSpecification;
 import com.example.demo.specification.SearchCriteria;
+import com.example.demo.utils.MyUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.jpa.domain.Specification;
@@ -33,6 +34,7 @@ public class AnnouncementService {
     private final BrandRepository brandRepository;
     private final ImageRepository imageRepository;
     private final ModelMapper modelMapper;
+    private final MyUtils myUtils;
 
     public ResAnnouncementDto create(AnnouncementDto announcementDto, String owner) {
         Announcement announcement = new Announcement();
@@ -57,7 +59,7 @@ public class AnnouncementService {
 
     public List<ResAnnouncementDto> getUserAnnouncement(String owner){
         List<Announcement> announcementList= announcementRepository.findAllByOwnerLogin(owner);
-        return mapList(announcementList);
+        return myUtils.mapList(announcementList);
     }
 
 
@@ -84,24 +86,7 @@ public class AnnouncementService {
              specification = specification.and(announcementSpecifications.get(i));
         }
         List<Announcement> announcementList = announcementRepository.findAll(specification);
-        return mapList(announcementList);
-    }
-
-    private List<ResAnnouncementDto> mapList(List<Announcement> announcementList){
-        List<ResAnnouncementDto> resAnnouncementDtoList = new ArrayList<>();
-        for(int i=0; i<announcementList.size(); i++){
-            resAnnouncementDtoList.add(modelMapper.map(announcementList.get(i), ResAnnouncementDto.class));
-            try {
-                if(announcementList.get(i).getImage() != null)
-                    resAnnouncementDtoList.get(i).setImageBytes(decompressBytes(announcementList.get(i).getImage().getBytes()));
-                else
-                    resAnnouncementDtoList.get(i).setImageBytes(decompressBytes(imageRepository.getOne(1).getBytes()));
-            } catch (DataFormatException e) {
-                e.printStackTrace();
-            }
-
-        }
-        return resAnnouncementDtoList;
+        return myUtils.mapList(announcementList);
     }
 
     @Transactional
@@ -122,7 +107,7 @@ public class AnnouncementService {
         announcement.setDamaged(announcementDto.isDamaged());
         ResAnnouncementDto  resAnnouncementDto =  modelMapper.map(announcement, ResAnnouncementDto.class);
         try {
-            resAnnouncementDto.setImageBytes(decompressBytes(resAnnouncementDto.getImageBytes()));
+            resAnnouncementDto.setImageBytes(myUtils.decompressBytes(resAnnouncementDto.getImageBytes()));
         } catch (DataFormatException e) {
             e.printStackTrace();
         }
@@ -137,7 +122,7 @@ public class AnnouncementService {
             resAnnouncementDto.setImageBytes(imageRepository.getOne(1).getBytes());
         }
         try {
-            resAnnouncementDto.setImageBytes(decompressBytes(resAnnouncementDto.getImageBytes()));
+            resAnnouncementDto.setImageBytes(myUtils.decompressBytes(resAnnouncementDto.getImageBytes()));
         } catch (DataFormatException e) {
             e.printStackTrace();
         }
@@ -150,7 +135,7 @@ public class AnnouncementService {
             resAnnouncementDto.setImageBytes(imageRepository.getOne(1).getBytes());
         }
         try {
-            resAnnouncementDto.setImageBytes(decompressBytes(resAnnouncementDto.getImageBytes()));
+            resAnnouncementDto.setImageBytes(myUtils.decompressBytes(resAnnouncementDto.getImageBytes()));
         } catch (DataFormatException e) {
             e.printStackTrace();
         }
@@ -162,20 +147,4 @@ public class AnnouncementService {
         return announcement.getOwner().equals(userRepository.findByLogin(owner).get());
     }
 
-    private byte[] decompressBytes(byte[] data) throws DataFormatException {
-        Inflater inflater = new Inflater();
-        inflater.setInput(data);
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
-        byte[] buffer = new byte[1024];
-        try {
-            while (!inflater.finished()) {
-                int count = inflater.inflate(buffer);
-                outputStream.write(buffer, 0, count);
-            }
-            outputStream.close();
-        } catch (IOException ioe) {
-        } catch (DataFormatException e) {
-        }
-        return outputStream.toByteArray();
-    }
 }

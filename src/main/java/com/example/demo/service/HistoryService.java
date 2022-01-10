@@ -8,6 +8,7 @@ import com.example.demo.repository.AnnouncementRepository;
 import com.example.demo.repository.HistoryRepository;
 import com.example.demo.repository.ImageRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.utils.MyUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -25,12 +26,10 @@ import java.util.zip.Inflater;
 
 public class HistoryService {
 
-    private final ModelMapper modelMapper;
     private final HistoryRepository historyRepository;
     private final AnnouncementRepository announcementRepository;
     private final UserRepository userRepository;
-    private final ImageRepository imageRepository;
-
+    private final MyUtils myUtils;
     @Transactional
     public void add(String login, Integer announcementId){
         History history = historyRepository.findByOwnerLogin(login).get();
@@ -43,40 +42,6 @@ public class HistoryService {
     public List<ResAnnouncementDto> get(String userId) {
         History history = historyRepository.findByOwnerLogin(userId).get();
         List<Announcement> list = history.getAnnouncements();
-        return mapList(list);
-    }
-
-    private List<ResAnnouncementDto> mapList(List<Announcement> announcementList){
-        List<ResAnnouncementDto> resAnnouncementDtoList = new ArrayList<>();
-        for(int i=0; i<announcementList.size(); i++){
-            resAnnouncementDtoList.add(modelMapper.map(announcementList.get(i), ResAnnouncementDto.class));
-            try {
-                if(announcementList.get(i).getImage() != null)
-                    resAnnouncementDtoList.get(i).setImageBytes(decompressBytes(announcementList.get(i).getImage().getBytes()));
-                else
-                    resAnnouncementDtoList.get(i).setImageBytes(decompressBytes(imageRepository.getOne(1).getBytes()));
-            } catch (DataFormatException e) {
-                e.printStackTrace();
-            }
-
-        }
-        return resAnnouncementDtoList;
-    }
-
-    private byte[] decompressBytes(byte[] data) throws DataFormatException {
-        Inflater inflater = new Inflater();
-        inflater.setInput(data);
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
-        byte[] buffer = new byte[1024];
-        try {
-            while (!inflater.finished()) {
-                int count = inflater.inflate(buffer);
-                outputStream.write(buffer, 0, count);
-            }
-            outputStream.close();
-        } catch (IOException ioe) {
-        } catch (DataFormatException e) {
-        }
-        return outputStream.toByteArray();
+        return myUtils.mapList(list);
     }
 }

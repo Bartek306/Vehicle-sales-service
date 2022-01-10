@@ -4,6 +4,7 @@ import com.example.demo.model.Announcement;
 import com.example.demo.model.Image;
 import com.example.demo.repository.AnnouncementRepository;
 import com.example.demo.repository.ImageRepository;
+import com.example.demo.utils.MyUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,7 @@ public class ImageService {
 
     private final ImageRepository imageRepository;
     private final AnnouncementRepository announcementRepository;
-
+    private final MyUtils myUtils;
     @Transactional
     public String upload(MultipartFile file, Integer id) throws IOException {
         Announcement announcement = announcementRepository.getOne(id);
@@ -37,7 +38,7 @@ public class ImageService {
     }
     public Image get() throws DataFormatException {
         Image image = imageRepository.getOne(1);
-        image.setBytes(decompressBytes(image.getBytes()));
+        image.setBytes(myUtils.decompressBytes(image.getBytes()));
         return image;
     }
 
@@ -61,20 +62,4 @@ public class ImageService {
         return outputStream.toByteArray();
     }
 
-    private byte[] decompressBytes(byte[] data) throws DataFormatException {
-        Inflater inflater = new Inflater();
-        inflater.setInput(data);
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
-        byte[] buffer = new byte[1024];
-        try {
-            while (!inflater.finished()) {
-                int count = inflater.inflate(buffer);
-                outputStream.write(buffer, 0, count);
-            }
-            outputStream.close();
-        } catch (IOException ioe) {
-        } catch (DataFormatException e) {
-        }
-        return outputStream.toByteArray();
-    }
 }
