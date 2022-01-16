@@ -14,7 +14,7 @@ public class CityService {
     private final CityRepository cityRepository;
 
     public City getCityFromName(String name){
-        return cityRepository.findByName(name).get();
+        return cityRepository.findByName(name).orElse(null);
     }
 
     public List<String> get() {

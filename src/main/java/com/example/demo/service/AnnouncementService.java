@@ -73,6 +73,14 @@ public class AnnouncementService {
                 operation = "<";
                 key = "price";
             }
+            else if(key.equals("maxYear")){
+                operation = "<";
+                key = "year";
+            }
+            else if(key.equals("minYear")){
+                operation = ">";
+                key = "year";
+            }
             else if(key.equals("minPrice")) {
                 operation = ">";
                 key = "price";
@@ -106,11 +114,14 @@ public class AnnouncementService {
         announcement.setFirstOwner(announcementDto.isFirstOwner());
         announcement.setDamaged(announcementDto.isDamaged());
         ResAnnouncementDto  resAnnouncementDto =  modelMapper.map(announcement, ResAnnouncementDto.class);
-        try {
-            resAnnouncementDto.setImageBytes(myUtils.decompressBytes(resAnnouncementDto.getImageBytes()));
-        } catch (DataFormatException e) {
-            e.printStackTrace();
+        for(int i=0; i< announcement.getImages().size(); i++){
+            try {
+                resAnnouncementDto.getImagesBytes().set(i, myUtils.decompressBytes(resAnnouncementDto.getImagesBytes().get(i)));
+            } catch (DataFormatException e) {
+                e.printStackTrace();
+            }
         }
+
         return resAnnouncementDto;    }
 
     @Transactional
@@ -124,14 +135,23 @@ public class AnnouncementService {
     public ResAnnouncementDto getById(Integer id) {
         Announcement announcement = announcementRepository.getOne(id);
         ResAnnouncementDto  resAnnouncementDto =  modelMapper.map(announcement, ResAnnouncementDto.class);
-        if(announcement.getImage() == null){
-            resAnnouncementDto.setImageBytes(imageRepository.getOne(1).getBytes());
+        if(announcement.getImages().isEmpty()){
+            try {
+                resAnnouncementDto.addToImageBytes(myUtils.decompressBytes(imageRepository.getOne(1).getBytes()));
+            } catch (DataFormatException e) {
+                e.printStackTrace();
+            }
         }
-        try {
-            resAnnouncementDto.setImageBytes(myUtils.decompressBytes(resAnnouncementDto.getImageBytes()));
-        } catch (DataFormatException e) {
-            e.printStackTrace();
+        else {
+            for(int i =0; i< announcement.getImages().size(); i++){
+                try {
+                    resAnnouncementDto.getImagesBytes().add(myUtils.decompressBytes(announcement.getImages().get(i).getBytes()));
+                } catch (DataFormatException e) {
+                    e.printStackTrace();
+                }
+            }
         }
+
         return resAnnouncementDto;
     }
 

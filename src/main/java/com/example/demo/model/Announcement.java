@@ -8,6 +8,8 @@ import lombok.Setter;
 import javax.annotation.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Setter
@@ -29,9 +31,9 @@ public class Announcement {
     @JsonIgnore
     private UserModel owner;
 
-    @OneToOne
+    @OneToMany
     @JsonIgnore
-    private Image image;
+    private List<Image> images = new ArrayList<>();
 
     @ManyToOne
     private City city;
@@ -61,6 +63,9 @@ public class Announcement {
         this.viewed ++;
     }
 
+    public void addImage(Image image){
+        images.add(image);
+    }
 
 
 }

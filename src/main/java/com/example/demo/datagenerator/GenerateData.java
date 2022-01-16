@@ -110,8 +110,9 @@ public class GenerateData {
         Image image = new Image();
         image.setBytes(compressBytes(multipartFile.getBytes()));
         Announcement nissanAnnouncement = announcementRepository.getOne(1);
+        nissanAnnouncement.setBrand(brandRepository.findByName("Nissan").get());
         image.setAnnouncement(nissanAnnouncement);
-        nissanAnnouncement.setImage(image);
+        nissanAnnouncement.addImage(image);
         imageRepository.save(image);
         for(String city: cities){
             Announcement announcement = new Announcement();

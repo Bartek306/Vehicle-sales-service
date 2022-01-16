@@ -6,7 +6,6 @@ import com.example.demo.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,17 +21,25 @@ public class MyUtils {
 
     public List<ResAnnouncementDto> mapList(List<Announcement> announcementList){
         List<ResAnnouncementDto> resAnnouncementDtoList = new ArrayList<>();
-        for(int i=0; i<announcementList.size(); i++){
-            resAnnouncementDtoList.add(modelMapper.map(announcementList.get(i), ResAnnouncementDto.class));
-            try {
-                if(announcementList.get(i).getImage() != null)
-                    resAnnouncementDtoList.get(i).setImageBytes(decompressBytes(announcementList.get(i).getImage().getBytes()));
-                else
-                    resAnnouncementDtoList.get(i).setImageBytes(decompressBytes(imageRepository.getOne(1).getBytes()));
-            } catch (DataFormatException e) {
-                e.printStackTrace();
+        for(Announcement announcement: announcementList){
+            resAnnouncementDtoList.add(modelMapper.map(announcement, ResAnnouncementDto.class));
+        }
+        for (int i =0; i<announcementList.size(); i++) {
+            if (announcementList.get(i).getImages().isEmpty()) {
+                try {
+                    resAnnouncementDtoList.get(i).getImagesBytes().add(decompressBytes(imageRepository.getOne(1).getBytes()));
+                } catch (DataFormatException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                for (int j = 0; j < announcementList.get(i).getImages().size(); j++) {
+                    try {
+                        resAnnouncementDtoList.get(i).getImagesBytes().add(decompressBytes(announcementList.get(i).getImages().get(j).getBytes()));
+                    } catch (DataFormatException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-
         }
         return resAnnouncementDtoList;
     }

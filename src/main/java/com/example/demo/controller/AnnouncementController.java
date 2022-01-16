@@ -40,13 +40,19 @@ public class AnnouncementController {
                                                         @RequestParam(required = false) String type,
                                                         @RequestParam(required = false) String maxPrice,
                                                         @RequestParam(required = false) String minPrice,
-                                                        @RequestParam(required = false) String brand) {
+                                                        @RequestParam(required = false) String brand,
+                                                        @RequestParam(required = false) String damaged,
+                                                        @RequestParam(required = false) String minYear,
+                                                        @RequestParam(required = false) String maxYear) {
         Map<String, Object> paramsMap = new HashMap<>();
         addToMap("city", cityService.getCityFromName(city), paramsMap);
         addToMap("type", type, paramsMap);
         addToMap("maxPrice", maxPrice, paramsMap);
         addToMap("minPrice", minPrice, paramsMap);
         addToMap("brand", brandService.getBrandFromName(brand), paramsMap);
+        addToMap("damaged", Boolean.parseBoolean(damaged), paramsMap);
+        addToMap("minYear", minYear, paramsMap);
+        addToMap("maxYear", maxYear, paramsMap);
         return ResponseEntity.ok(announcementService.get(paramsMap));
     }
 
@@ -70,7 +76,7 @@ public class AnnouncementController {
     private static void addToMap(String key, Object value, Map<String, Object> map){
     if(value != null){
         map.put(key, value);
-    }
+        }
     }
 
 }

@@ -14,7 +14,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
-import java.util.zip.Inflater;
 
 @RequiredArgsConstructor
 @Service
@@ -30,7 +29,7 @@ public class ImageService {
         image.setAnnouncement(announcement);
         image.setName("sdsaasd");
         image.setBytes(compressBytes(file.getBytes()));
-        announcement.setImage(image);
+        announcement.addImage(image);
         imageRepository.saveAndFlush(image);
         return "Ok";
 

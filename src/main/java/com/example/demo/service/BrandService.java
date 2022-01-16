@@ -15,7 +15,7 @@ public class BrandService {
     private final BrandRepository brandRepository;
 
     public Brand getBrandFromName(String name){
-        return brandRepository.findByName(name).get();
+        return brandRepository.findByName(name).orElse(null);
     }
 
     public List<String> get() {
