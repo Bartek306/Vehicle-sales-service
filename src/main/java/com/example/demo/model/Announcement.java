@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
@@ -33,13 +34,14 @@ public class Announcement {
 
     @OneToMany
     @JsonIgnore
+    @Column(length = 16000000)
     private List<Image> images = new ArrayList<>();
 
     @ManyToOne
     private City city;
 
     private String title;
-
+    @Column(columnDefinition="TEXT", length = 1000)
     private String description;
 
     private Integer viewed;
@@ -54,7 +56,9 @@ public class Announcement {
     @Column(nullable = true)
     private Integer mileage;
 
+    private Integer capacity;
 
+    @Column(nullable = false)
     private boolean firstOwner = false;
 
     private boolean damaged = false;

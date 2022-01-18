@@ -16,6 +16,12 @@
       "name": "Fiat"
     },
     {
+      "name": "Ferrari"
+    },
+    {
+      "name": "Man"
+    },
+    {
       "name":"Ford"
     },
     {
@@ -56,6 +62,12 @@
     },
     {
       "name": "Other"
+    },
+    {
+      "name": "Harley"
+    },
+    {
+      "name": "BRANDYS"
     }
   ]
 }

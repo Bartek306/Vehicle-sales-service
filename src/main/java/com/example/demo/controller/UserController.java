@@ -43,5 +43,10 @@ public class UserController {
         return ResponseEntity.ok(userService.getCity(JwtUtils.getUsernameFromHeader()));
     }
 
+    @GetMapping("get")
+    public ResponseEntity<String> getUserFromToken(@RequestParam String token){
+        return ResponseEntity.ok(userService.getUser(token));
+    }
+
 }
 

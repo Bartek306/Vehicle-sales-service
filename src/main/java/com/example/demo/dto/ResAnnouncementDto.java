@@ -25,6 +25,8 @@ public class ResAnnouncementDto{
     private Brand brand;
     private String type;
     private Integer viewed;
+    private Integer power;
+    private Integer capacity;
 
     public void addToImageBytes(byte [] imageByte){
         imagesBytes.add(imageByte);

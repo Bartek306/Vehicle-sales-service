@@ -17,6 +17,7 @@ public class AnnouncementDto {
     private Integer power;
     private String model;
     private Integer mileage;
+    private Integer capacity;
     private boolean firstOwner;
     private boolean damaged;
 

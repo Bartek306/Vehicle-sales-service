@@ -73,59 +73,47 @@ public class GenerateData {
     }
 
     public void generateAnnouncement() throws IOException {
-        List<String> cities = List.of("Warszawa" ,"Kielce", "Krakow", "Krakow");
-        List<Brand> brands = brandRepository.findAll();
         Random random = new Random();
-        FileInputStream fileInputStream = new FileInputStream("src/main/resources/error.jpg");
+        String baseUrl = "src/main/resources/";
+        FileInputStream fileInputStream = new FileInputStream(baseUrl + "error.jpg" );
         MultipartFile multipartFile = new MockMultipartFile("error", "error.jpg",
                 "image/jpg", IOUtils.toByteArray(fileInputStream));
         Image errorImage = new Image();
         errorImage.setBytes(compressBytes(multipartFile.getBytes()));
         imageRepository.save(errorImage);
-        for(String city: cities){
-            Image image = new Image();
-            image.setName("123 " + city);
-            image.setBytes(compressBytes(multipartFile.getBytes()));
+
+        JSONArray jsonArray = getArray("announcement.json");
+        for(Object o: Objects.requireNonNull(jsonArray)){
+            JSONObject jsonObject = (JSONObject) o;
             Announcement announcement = new Announcement();
-            announcement.setOwner(userRepository.findByLogin("login").get());
-            announcement.setType("Auto");
-            announcement.setTitle("dsadasdas");
-            announcement.setDescription("dsaadsdasdsadasdsa");
-            announcement.setBrand(brands.get(random.nextInt(brands.size())));
-            announcement.setPrice(random.nextFloat() * 100000);
-            announcement.setCity(cityRepository.findByName(city).get());
-            announcement.setViewed(0);
-            announcement.setYear(random.ints(1980, 2022).findFirst().getAsInt());
-            announcement.setModel("dsa");
-            announcement.setPower(random.ints(75, 290).findFirst().getAsInt());
-            announcement.setMileage(random.ints(5000, 300000).findFirst().getAsInt());
+            announcement.setOwner(userRepository.findByLogin(jsonObject.get("owner").toString()).get());
+            announcement.setType(jsonObject.get("type").toString());
+            announcement.setPrice(Float.parseFloat(jsonObject.get("price").toString()));
+            announcement.setBrand(brandRepository.findByName(jsonObject.get("brand").toString()).get());
+            announcement.setCity(cityRepository.findByName(jsonObject.get("city").toString()).get());
+            announcement.setTitle(jsonObject.get("title").toString());
+            announcement.setDescription(jsonObject.get("description").toString());
+            announcement.setModel(jsonObject.get("model").toString());
+            if(jsonObject.get("power")!= null){
+                announcement.setPower(Integer.parseInt(jsonObject.get("power").toString()));
+                announcement.setMileage(Integer.parseInt(jsonObject.get("mileage").toString()));
+            }
+            announcement.setFirstOwner(Boolean.parseBoolean(jsonObject.get("firstOwner").toString()));
+            announcement.setDamaged(Boolean.parseBoolean(jsonObject.get("damaged").toString()));
+             fileInputStream = new FileInputStream(baseUrl + jsonObject.get("image").toString() );
+             multipartFile = new MockMultipartFile("error", "error.jpg",
+                    "image/jpg", IOUtils.toByteArray(fileInputStream));
+            Image image = new Image();
+            image.setBytes(compressBytes(multipartFile.getBytes()));
             image.setAnnouncement(announcement);
-            //1announcement.setImage(image);
+            announcement.addImage(image);
             announcementRepository.save(announcement);
             imageRepository.save(image);
+
         }
-         fileInputStream = new FileInputStream("src/main/resources/nissan.jpg");
-         multipartFile = new MockMultipartFile("error", "nissan.jpg",
-                "image/jpg", IOUtils.toByteArray(fileInputStream));
-        Image image = new Image();
-        image.setBytes(compressBytes(multipartFile.getBytes()));
-        Announcement nissanAnnouncement = announcementRepository.getOne(1);
-        nissanAnnouncement.setBrand(brandRepository.findByName("Nissan").get());
-        image.setAnnouncement(nissanAnnouncement);
-        nissanAnnouncement.addImage(image);
-        imageRepository.save(image);
-        for(String city: cities){
-            Announcement announcement = new Announcement();
-            announcement.setOwner(userRepository.findByLogin("testowy").get());
-            announcement.setType("CAR");
-            announcement.setTitle("elo");
-            announcement.setDescription("dsaadsdasdsadasdsa");
-            announcement.setBrand(brands.get(random.nextInt(brands.size())));
-            announcement.setPrice(random.nextFloat() * 100000);
-            announcement.setCity(cityRepository.findByName(city).get());
-            announcement.setViewed(0);
-            announcementRepository.save(announcement);
-        }
+
+
+
     }
 
     public void generateUser(){

@@ -107,4 +107,8 @@ public class UserService {
         }
 
     }
+
+    public String getUser(String token) {
+        return "";
+    }
 }
