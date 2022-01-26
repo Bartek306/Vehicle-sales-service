@@ -38,14 +38,15 @@ public class UserController {
         return ResponseEntity.ok(userService.update(phone, city, JwtUtils.getUsernameFromHeader()));
     }
 
-    @GetMapping("/get_city")
-    public ResponseEntity<String> getCity(){
-        return ResponseEntity.ok(userService.getCity(JwtUtils.getUsernameFromHeader()));
-    }
 
     @GetMapping("get")
     public ResponseEntity<String> getUserFromToken(@RequestParam String token){
         return ResponseEntity.ok(userService.getUser(token));
+    }
+
+    @GetMapping("get_phone")
+    public ResponseEntity<String> getPhone(@RequestParam String userLogin){
+        return ResponseEntity.ok(userService.getPhone(userLogin));
     }
 
 }

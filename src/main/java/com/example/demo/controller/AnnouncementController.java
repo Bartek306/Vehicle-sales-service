@@ -67,6 +67,11 @@ public class AnnouncementController {
         return ResponseEntity.ok(announcementService.addViewed(id));
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResAnnouncementDto> delete(@RequestParam Integer id){
+        return ResponseEntity.ok(announcementService.delete(id));
+    }
+
     @GetMapping("check_ownership")
     public ResponseEntity<Boolean> checkOwnership(@RequestParam Integer id){
         return ResponseEntity.ok(announcementService.checkOwnership(id, JwtUtils.getUsernameFromHeader()));

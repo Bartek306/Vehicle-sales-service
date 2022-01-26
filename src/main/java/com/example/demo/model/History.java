@@ -20,8 +20,7 @@ public class History {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private UserModel owner;
-
-    @ManyToMany
+    @ManyToMany()
     private List<Announcement> announcements = new ArrayList<>();
 
     public void add(Announcement announcement){

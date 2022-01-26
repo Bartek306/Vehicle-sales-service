@@ -113,16 +113,8 @@ public class AnnouncementService {
         announcement.setMileage(announcementDto.getMileage());
         announcement.setFirstOwner(announcementDto.isFirstOwner());
         announcement.setDamaged(announcementDto.isDamaged());
-        ResAnnouncementDto  resAnnouncementDto =  modelMapper.map(announcement, ResAnnouncementDto.class);
-        for(int i=0; i< announcement.getImages().size(); i++){
-            try {
-                resAnnouncementDto.getImagesBytes().set(i, myUtils.decompressBytes(resAnnouncementDto.getImagesBytes().get(i)));
-            } catch (DataFormatException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return resAnnouncementDto;    }
+        return modelMapper.map(announcement, ResAnnouncementDto.class);
+    }
 
     @Transactional
     public String addViewed(Integer id) {
@@ -158,5 +150,9 @@ public class AnnouncementService {
     public Boolean checkOwnership(Integer id, String owner) {
         Announcement announcement = announcementRepository.getOne(id);
         return announcement.getOwner().equals(userRepository.findByLogin(owner).get());
+    }
+
+    public ResAnnouncementDto delete(Integer id) {
+        return new ResAnnouncementDto();
     }
 }

@@ -12,7 +12,3 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 }
-
-
-// Refactor Jwt
-// Make generate data from file

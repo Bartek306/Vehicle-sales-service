@@ -27,7 +27,6 @@ import java.util.zip.Deflater;
 @Component
 @RequiredArgsConstructor
 public class GenerateData {
-    private final VoivodeshipRepository voivodeshipRepository;
     private final CityRepository cityRepository;
     private final AnnouncementRepository announcementRepository;
     private final UserRepository userRepository;
@@ -44,16 +43,6 @@ public class GenerateData {
         for (Object o : Objects.requireNonNull(jsonArray)) {
             JSONObject jsonObject = (JSONObject) o;
             City city = new City();
-            Optional<Voivodeship> voivodeship = voivodeshipRepository.findByName(jsonObject.get("voivodeship").toString());
-            if(voivodeship.isPresent()){
-                city.setVoivodeship(voivodeship.get());
-            }
-            else {
-                Voivodeship newVoivodeship = new Voivodeship();
-                newVoivodeship.setName(jsonObject.get("voivodeship").toString());
-                voivodeshipRepository.save(newVoivodeship);
-                city.setVoivodeship(newVoivodeship);
-            }
             city.setName(jsonObject.get("city").toString());
             cityRepository.save(city);
         }
@@ -100,15 +89,21 @@ public class GenerateData {
             }
             announcement.setFirstOwner(Boolean.parseBoolean(jsonObject.get("firstOwner").toString()));
             announcement.setDamaged(Boolean.parseBoolean(jsonObject.get("damaged").toString()));
-             fileInputStream = new FileInputStream(baseUrl + jsonObject.get("image").toString() );
-             multipartFile = new MockMultipartFile("error", "error.jpg",
-                    "image/jpg", IOUtils.toByteArray(fileInputStream));
-            Image image = new Image();
-            image.setBytes(compressBytes(multipartFile.getBytes()));
-            image.setAnnouncement(announcement);
-            announcement.addImage(image);
+            JSONArray imageArray = (JSONArray) jsonObject.get("images");
+            for(Object img: Objects.requireNonNull(imageArray)){
+                JSONObject imageObject = (JSONObject) img;
+                fileInputStream = new FileInputStream(baseUrl + imageObject.get("name").toString() );
+                multipartFile = new MockMultipartFile("error", "error.jpg",
+                        "image/jpg", IOUtils.toByteArray(fileInputStream));
+                Image image = new Image();
+                image.setBytes(compressBytes(multipartFile.getBytes()));
+                image.setAnnouncement(announcement);
+                announcement.addImage(image);
+                imageRepository.save(image);
+            }
+
+            announcement.setViewed(0);
             announcementRepository.save(announcement);
-            imageRepository.save(image);
 
         }
 
@@ -128,6 +123,7 @@ public class GenerateData {
         userModel.setHistory(history);
         userModel.setFavourite(favourite);
         history.setOwner(userModel);
+        userModel.setPhoneNumber("123456789");
         favourite.setOwner(userModel);
         historyRepository.save(history);
         favouriteRepository.save(favourite);

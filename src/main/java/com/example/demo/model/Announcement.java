@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
@@ -56,6 +59,7 @@ public class Announcement {
     @Column(nullable = true)
     private Integer mileage;
 
+    @Column(nullable = true)
     private Integer capacity;
 
     @Column(nullable = false)

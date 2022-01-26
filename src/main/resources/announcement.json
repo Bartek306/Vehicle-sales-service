@@ -15,7 +15,14 @@
       "mileage": "340000",
       "firstOwner": "false",
       "damaged": "false",
-      "image": "bmw_e39.jpg"
+      "images":[
+        {
+          "name": "bmw_e39.jpg"
+        },
+        {
+          "name": "bmw_e39_1.png"
+        }
+      ]
     },
     {
       "owner": "login",
@@ -32,7 +39,11 @@
       "mileage": "123000",
       "firstOwner": "true",
       "damaged": "false",
-      "image": "nissan.jpg"
+      "images":[
+        {
+          "name": "nissan.jpg"
+        }
+      ]
     },
     {
       "owner": "login",
@@ -49,7 +60,11 @@
       "mileage": "10000",
       "firstOwner": "true",
       "damaged": "false",
-      "image": "harley.jpg"
+      "images":[
+        {
+          "name": "harley.jpg"
+        }
+      ]
     },
     {
       "owner": "login",
@@ -66,7 +81,11 @@
       "mileage": "70000",
       "firstOwner": "true",
       "damaged": "false",
-      "image": "opel.jpg"
+      "images":[
+        {
+          "name": "opel.jpg"
+        }
+      ]
     },
     {
       "owner": "testowy",
@@ -83,7 +102,11 @@
       "mileage": "32000",
       "firstOwner": "false",
       "damaged": "false",
-      "image": "ferrari.png"
+      "images":[
+        {
+          "name": "ferrari.png"
+        }
+      ]
     },
     {
       "owner": "login",
@@ -100,7 +123,11 @@
       "mileage": "61655",
       "firstOwner": "false",
       "damaged": "true",
-      "image": "man.jpg"
+      "images":[
+        {
+          "name": "man.jpg"
+        }
+      ]
     },
     {
       "owner": "testowy",
@@ -114,7 +141,11 @@
       "year": "1993",
       "firstOwner": "false",
       "damaged": "false",
-      "image": "przyczepa.jpg"
+      "images":[
+        {
+          "name": "przyczepa.jpg"
+        }
+      ]
     }
   ]
 }

@@ -111,4 +111,9 @@ public class UserService {
     public String getUser(String token) {
         return "";
     }
+
+    public String getPhone(String userLogin) {
+        UserModel userModel = userRepository.findByLogin(userLogin).get();
+        return userModel.getPhoneNumber();
+    }
 }

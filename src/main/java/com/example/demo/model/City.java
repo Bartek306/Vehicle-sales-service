@@ -20,9 +20,6 @@ public class City {
     @NotBlank
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Voivodeship voivodeship;
-
     @Override
     public String toString(){
         return name;

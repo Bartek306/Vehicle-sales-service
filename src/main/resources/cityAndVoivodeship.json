@@ -1,160 +1,124 @@
 {
   "data": [
     {
-      "city":"Lubin",
-      "voivodeship":"Dolnoslaskie"
+      "city":"Lubin"
     },
 
     {
-      "city":"Krakow",
-      "voivodeship":"Malopolskie"
+      "city":"Krakow"
     },
     {
-      "city": "Wieliczka",
-      "voivodeship": "Malopolskie"
+      "city": "Wieliczka"
     },
 
     {
-      "city":"Lodz",
-      "voivodeship":"Lodzkie"
+      "city":"Lodz"
     },
 
     {
-      "city":"Poznan",
-      "voivodeship":"Wielkopolskie"
+      "city":"Poznan"
     },
 
     {
-      "city":"Bydgoszcz",
-      "voivodeship":"Kujawsko-pomorskie"
+      "city":"Bydgoszcz"
     },
 
     {
-      "city": "Torun",
-      "voivodeship": "Kujawsko-pomorskie"
+      "city": "Torun"
     },
 
     {
-      "city":"Lublin",
-      "voivodeship":"Lubelskie"
+      "city":"Lublin"
     },
 
     {
-      "city": "Zamosc",
-      "voivodeship": "Lubelskie"
+      "city": "Zamosc"
     },
 
     {
-      "city":"Katowice",
-      "voivodeship":"Slaskie"
+      "city":"Katowice"
     },
     {
-      "city":"Gdynia",
-      "voivodeship":"Pomorskie"
+      "city":"Gdynia"
     },
     {
-      "city": "Gdansk",
-      "voivodeship": "Pomorskie"
+      "city": "Gdansk"
     },
     {
-      "city":"Czestochowa",
-      "voivodeship":"Slaskie"
+      "city":"Czestochowa"
     },
     {
-      "city":"Radom",
-      "voivodeship":"Mazowieckie"
+      "city":"Radom"
     },
     {
-      "city":"Rzeszow",
-      "voivodeship":"Podkarpackie"
+      "city":"Rzeszow"
     },
 
     {
-      "city": "Debica",
-      "voivodeship": "Podkarpackie"
+      "city": "Debica"
     },
 
     {
-      "city": "Suwalki",
-      "voivodeship": "Podlaskie"
+      "city": "Suwalki"
     },
 
     {
-      "city": "Bialystok",
-      "voivodeship": "Podlaskie"
+      "city": "Bialystok"
     },
     {
-      "city":"Kielce",
-      "voivodeship":"Swietokrzyskie"
+      "city":"Kielce"
     },
     {
-      "city":"Gliwice",
-      "voivodeship":"Slaskie"
+      "city":"Gliwice"
     },
     {
-      "city":"Gorzow Wielkopolski",
-      "voivodeship":"Lubuskie"
+      "city":"Gorzow Wielkopolski"
     },
     {
-      "city": "Zielona Gora",
-      "voivodeship": "Lubuskie"
+      "city": "Zielona Gora"
     },
     {
-      "city":"Elblag",
-      "voivodeship":"Warminsko-mazurskie"
+      "city":"Elblag"
     },
     {
-      "city":"Plock",
-      "voivodeship":"Mazowieckie"
+      "city":"Plock"
     },
     {
-      "city":"Walbrzych",
-      "voivodeship":"Dolnoslaskie"
+      "city":"Walbrzych"
     },
     {
-      "city":"Chorzow",
-      "voivodeship":"Slaskie"
+      "city":"Chorzow"
     },
     {
-      "city":"Koszalin",
-      "voivodeship":"Wielkopolskie"
+      "city":"Koszalin"
     },
     {
-      "city": "Szczecin",
-      "voivodeship": "Zachodniopomorskie"
+      "city": "Szczecin"
     },
     {
-      "city": "Koszalin",
-      "voivodeship": "Zachodniopomorskie"
+      "city": "Koszalin"
     },
     {
-      "city": "Opole",
-      "voivodeship": "Opolskie"
+      "city": "Opole"
     },
 
     {
-      "city": "Warszawa",
-      "voivodeship": "Mazowieckie"
+      "city": "Warszawa"
     },
     {
-      "city": "Nysa",
-      "voivodeship": "Opolskie"
+      "city": "Nysa"
     },
     {
-      "city":"Legnica",
-      "voivodeship":"Dolnoslaskie"
+      "city":"Legnica"
     },
     {
-      "city":"Piotrkow Trybunalski",
-      "voivodeship":"Lodzkie"
+      "city":"Piotrkow Trybunalski"
     },
     {
-      "city":"Ostrowiec Swietokrzyski",
-      "voivodeship":"Swietokrzyskie"
+      "city":"Ostrowiec Swietokrzyski"
     },
     {
-      "city": "Olsztyn",
-      "voivodeship": "Warminsko-mazurskie"
+      "city": "Olsztyn"
     }
   ]
 }
