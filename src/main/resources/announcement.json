@@ -133,7 +133,7 @@
       "owner": "testowy",
       "type": "Przyczepa",
       "price": "12950",
-      "brand": "BRANDYS",
+      "brand": "Brandys",
       "city": "Lubin",
       "title": "Przyczepa oryginał WYWROTKA BRANDYS BSS ład 9 TON",
       "description": "WITAM\nPosiadam na sprzedaż\nPrzyczepę transportową ciężarowo-rolniczą wywrotkę 2 stronną marki BRANDYS BSS MODEL PS 93, o ładowności 9 ton",
@@ -144,6 +144,39 @@
       "images":[
         {
           "name": "przyczepa.jpg"
+        }
+      ]
+    },
+    {
+      "owner": "testowy",
+      "type": "Auto",
+      "price": 60000,
+      "brand": "BMW",
+      "city": "Warszawa",
+      "title": "BMW f10 3.0D",
+      "description": "Samochód wyróżnia się na tle innych aut tego modelu.\n\nAuto w doskonałej kondycji - nie wymaga wkładu finansowego.\nŚrodek auta - zachowany w bardzo dobrym stanie.\nNadwozie bez uszkodzeń rys czy śladów miejskiego użytkowania.",
+      "model": "f10",
+      "year": "2010",
+      "firstOwner":"false",
+      "capacity": "3000",
+      "damaged": "false",
+      "power": "320",
+      "mileage": "120000",
+      "images": [
+        {
+          "name": "f10_0.png"
+        },
+        {
+          "name": "f10_1.png"
+        },
+        {
+          "name": "f10_2.png"
+        },
+        {
+          "name": "f10_3.png"
+        },
+        {
+          "name": "f10_4.png"
         }
       ]
     }

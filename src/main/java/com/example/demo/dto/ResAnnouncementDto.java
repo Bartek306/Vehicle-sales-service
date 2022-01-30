@@ -27,6 +27,8 @@ public class ResAnnouncementDto{
     private Integer viewed;
     private Integer power;
     private Integer capacity;
+    private Boolean firstOwner;
+    private Boolean damaged;
 
     public void addToImageBytes(byte [] imageByte){
         imagesBytes.add(imageByte);

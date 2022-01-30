@@ -5,6 +5,7 @@ import com.example.demo.model.Announcement;
 import com.example.demo.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -16,8 +17,8 @@ import java.util.zip.Inflater;
 @Component
 @RequiredArgsConstructor
 public class MyUtils {
-    private final ImageRepository imageRepository;
-    private final ModelMapper modelMapper;
+    @Autowired  private final ImageRepository imageRepository;
+    @Autowired private final ModelMapper modelMapper;
 
     public List<ResAnnouncementDto> mapList(List<Announcement> announcementList){
         List<ResAnnouncementDto> resAnnouncementDtoList = new ArrayList<>();
@@ -45,6 +46,9 @@ public class MyUtils {
     }
 
     public byte[] decompressBytes(byte[] data) throws DataFormatException {
+        if(data == null){
+            return null;
+        }
         Inflater inflater = new Inflater();
         inflater.setInput(data);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);

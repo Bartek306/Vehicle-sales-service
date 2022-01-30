@@ -8,6 +8,5 @@ import java.util.List;
 
 public interface AnnouncementRepository extends JpaRepository<Announcement, Integer>, JpaSpecificationExecutor<Announcement> {
     List<Announcement> findAllByOwnerLogin(String owner);
-
     List<Announcement> findAllByType(String type);
 }

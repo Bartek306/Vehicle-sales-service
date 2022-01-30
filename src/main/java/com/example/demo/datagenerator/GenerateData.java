@@ -83,9 +83,12 @@ public class GenerateData {
             announcement.setTitle(jsonObject.get("title").toString());
             announcement.setDescription(jsonObject.get("description").toString());
             announcement.setModel(jsonObject.get("model").toString());
+            announcement.setYear(Integer.parseInt(jsonObject.get("year").toString()));
             if(jsonObject.get("power")!= null){
                 announcement.setPower(Integer.parseInt(jsonObject.get("power").toString()));
                 announcement.setMileage(Integer.parseInt(jsonObject.get("mileage").toString()));
+                announcement.setYear(Integer.parseInt(jsonObject.get("year").toString()));
+                announcement.setCapacity(Integer.parseInt(jsonObject.get("capacity").toString()));
             }
             announcement.setFirstOwner(Boolean.parseBoolean(jsonObject.get("firstOwner").toString()));
             announcement.setDamaged(Boolean.parseBoolean(jsonObject.get("damaged").toString()));
@@ -156,8 +159,8 @@ public class GenerateData {
     }
 
     public void generateHistory(){
-        Announcement announcement = announcementRepository.findById(1).get();
-        Announcement announcement1 = announcementRepository.findById(2).get();
+        Announcement announcement = announcementRepository.findById(8).get();
+        Announcement announcement1 = announcementRepository.findById(7).get();
         UserModel userModel = userRepository.findByLogin("login").get();
         System.out.println(userModel.getHistory());
         userModel.getHistory().add(announcement);

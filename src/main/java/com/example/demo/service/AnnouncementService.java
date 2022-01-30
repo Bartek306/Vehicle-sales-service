@@ -2,10 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.AnnouncementDto;
 import com.example.demo.dto.ResAnnouncementDto;
-import com.example.demo.model.Announcement;
-import com.example.demo.model.City;
-import com.example.demo.model.History;
-import com.example.demo.model.Image;
+import com.example.demo.model.*;
 import com.example.demo.repository.*;
 import com.example.demo.specification.AnnouncementSpecification;
 import com.example.demo.specification.SearchCriteria;
@@ -18,9 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
@@ -64,6 +59,9 @@ public class AnnouncementService {
 
 
     public List<ResAnnouncementDto>get(Map<String, Object> paramMap){
+        if(paramMap.get("search") != null){
+            return search(paramMap.get("search").toString());
+        }
         List<AnnouncementSpecification> announcementSpecifications = new ArrayList<>();
         for(Map.Entry<String, Object > entry: paramMap.entrySet()){
             String key = entry.getKey();
@@ -149,10 +147,34 @@ public class AnnouncementService {
 
     public Boolean checkOwnership(Integer id, String owner) {
         Announcement announcement = announcementRepository.getOne(id);
-        return announcement.getOwner().equals(userRepository.findByLogin(owner).get());
+        UserModel userModel;
+        try {
+           userModel = userRepository.findByLogin(owner).get();
+        }catch (Exception e){
+            return false;
+        }
+        return announcement.getOwner().equals(userModel);
     }
 
     public ResAnnouncementDto delete(Integer id) {
-        return new ResAnnouncementDto();
+        Announcement announcement = announcementRepository.getOne(id);
+        List<Image> images = announcement.getImages();
+        for (Image image : images) {
+            imageRepository.delete(image);
+        }
+        announcementRepository.delete(announcement);
+        return modelMapper.map(announcement, ResAnnouncementDto.class);
+    }
+
+    public List<ResAnnouncementDto>search(String value){
+        List<Announcement> announcementList = announcementRepository.findAll();
+        Set<Announcement> set = new HashSet<>();
+        for(Announcement announcement: announcementList){
+            if(announcement.getTitle().contains(value)){
+                set.add(announcement);
+            }
+        }
+        List<Announcement> listFromSet = new ArrayList<>(set);
+        return myUtils.mapList(listFromSet);
     }
 }

@@ -24,6 +24,7 @@ public class Announcement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(columnDefinition="TEXT", length = 1000)
     private String type;
 
     private Float price;
@@ -74,6 +75,7 @@ public class Announcement {
     public void addImage(Image image){
         images.add(image);
     }
+
 
 
 }
