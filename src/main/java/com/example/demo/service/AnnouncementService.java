@@ -28,6 +28,8 @@ public class AnnouncementService {
     private final UserRepository userRepository;
     private final BrandRepository brandRepository;
     private final ImageRepository imageRepository;
+    private final HistoryRepository historyRepository;
+    private final FavouriteRepository favouriteRepository;
     private final ModelMapper modelMapper;
     private final MyUtils myUtils;
 
@@ -38,14 +40,14 @@ public class AnnouncementService {
         announcement.setDescription(announcementDto.getDescription());
         announcement.setType(announcementDto.getType());
         announcement.setOwner(userRepository.findByLogin(owner).get());
-        City city = cityRepository.findByName(announcementDto.getCity()).get();
-        announcement.setCity(city);
+        announcement.setCity( cityRepository.findByName(announcementDto.getCity()).get());
         announcement.setViewed(0);
         announcement.setBrand(brandRepository.findByName(announcementDto.getBrand()).get());
         announcement.setYear(announcementDto.getYear());
         announcement.setModel(announcementDto.getModel());
         announcement.setPower(announcementDto.getPower());
         announcement.setMileage(announcementDto.getMileage());
+        announcement.setCapacity(announcementDto.getCapacity());
         announcement.setDamaged(announcementDto.isDamaged());
         announcement.setFirstOwner(announcementDto.isFirstOwner());
         announcementRepository.save(announcement);
@@ -59,8 +61,8 @@ public class AnnouncementService {
 
 
     public List<ResAnnouncementDto>get(Map<String, Object> paramMap){
-        if(paramMap.get("search") != null){
-            return search(paramMap.get("search").toString());
+        if(paramMap.get("query") != null){
+            return search(paramMap.get("query").toString());
         }
         List<AnnouncementSpecification> announcementSpecifications = new ArrayList<>();
         for(Map.Entry<String, Object > entry: paramMap.entrySet()){
@@ -155,14 +157,22 @@ public class AnnouncementService {
         }
         return announcement.getOwner().equals(userModel);
     }
-
+    @Transactional
     public ResAnnouncementDto delete(Integer id) {
         Announcement announcement = announcementRepository.getOne(id);
         List<Image> images = announcement.getImages();
         for (Image image : images) {
-            imageRepository.delete(image);
+            image.setAnnouncement(null);
         }
         announcementRepository.delete(announcement);
+        List<History> histories = historyRepository.findAll();
+        for(History history: histories){
+            history.remove(announcement);
+        }
+        List<Favourite> favourites = favouriteRepository.findAll();
+        for(Favourite favourite: favourites){
+            favourite.remove(announcement);
+        }
         return modelMapper.map(announcement, ResAnnouncementDto.class);
     }
 

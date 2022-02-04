@@ -56,6 +56,9 @@ public class UserModel implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Announcement> announcements;
 
+    private Boolean enabled;
+
+    private String role;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
@@ -83,6 +86,6 @@ public class UserModel implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 }

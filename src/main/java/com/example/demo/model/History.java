@@ -26,4 +26,5 @@ public class History {
     public void add(Announcement announcement){
         announcements.add(0, announcement);
     }
+    public void remove(Announcement announcement){announcements.remove(announcement);}
 }

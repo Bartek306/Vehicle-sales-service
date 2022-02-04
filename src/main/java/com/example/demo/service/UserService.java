@@ -86,7 +86,9 @@ public class UserService {
         }
         TokenDto tokenDto = new TokenDto();
         tokenDto.setToken(jwt);
+        tokenDto.setRole(user.getRole());
         return tokenDto;
+
     }
 
     @Transactional

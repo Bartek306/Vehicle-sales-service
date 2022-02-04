@@ -107,11 +107,7 @@ public class GenerateData {
 
             announcement.setViewed(0);
             announcementRepository.save(announcement);
-
         }
-
-
-
     }
 
     public void generateUser(){
@@ -122,6 +118,8 @@ public class GenerateData {
         userModel.setCreatedAt(LocalDateTime.now().toString());
         userModel.setEmail("email@email.com");
         userModel.setLogin("login");
+        userModel.setEnabled(true);
+        userModel.setRole("USER");
         userModel.setPassword(passwordEncoder.encode("password"));
         userModel.setHistory(history);
         userModel.setFavourite(favourite);
@@ -135,7 +133,6 @@ public class GenerateData {
         UserModel userModel1 = new UserModel();
         History history1 = new History();
         Favourite favourite1 = new Favourite();
-        userModel1.setActive(true);
         userModel1.setCreatedAt(LocalDateTime.now().toString());
         userModel1.setEmail("test@email.com");
         userModel1.setLogin("testowy");

@@ -43,7 +43,8 @@ public class AnnouncementController {
                                                         @RequestParam(required = false) String brand,
                                                         @RequestParam(required = false) String damaged,
                                                         @RequestParam(required = false) String minYear,
-                                                        @RequestParam(required = false) String maxYear) {
+                                                        @RequestParam(required = false) String maxYear,
+                                                        @RequestParam(required = false) String query) {
         Map<String, Object> paramsMap = new HashMap<>();
         addToMap("city", cityService.getCityFromName(city), paramsMap);
         addToMap("type", type, paramsMap);
@@ -53,6 +54,7 @@ public class AnnouncementController {
         addToMap("damaged", Boolean.parseBoolean(damaged), paramsMap);
         addToMap("minYear", minYear, paramsMap);
         addToMap("maxYear", maxYear, paramsMap);
+        addToMap("query", query, paramsMap);
         return ResponseEntity.ok(announcementService.get(paramsMap));
     }
 
