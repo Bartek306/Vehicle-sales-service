@@ -110,7 +110,7 @@ public class GenerateData {
         }
     }
 
-    public void generateUser(){
+    public void generateUser() {
         UserModel userModel = new UserModel();
         History history = new History();
         Favourite favourite = new Favourite();
@@ -136,6 +136,8 @@ public class GenerateData {
         userModel1.setCreatedAt(LocalDateTime.now().toString());
         userModel1.setEmail("test@email.com");
         userModel1.setLogin("testowy");
+        userModel1.setRole("USER");
+        userModel1.setActive(false);
         userModel1.setPassword(passwordEncoder.encode("password"));
         userModel1.setHistory(history1);
         history1.setOwner(userModel1);
@@ -143,8 +145,23 @@ public class GenerateData {
         historyRepository.save(history1);
         userRepository.saveAndFlush(userModel1);
         favouriteRepository.save(favourite1);
-    }
 
+        UserModel admin = new UserModel();
+        History adminHistory = new History();
+        Favourite adminFavourite = new Favourite();
+        admin.setCreatedAt(LocalDateTime.now().toString());
+        admin.setEmail("admin@email.com");
+        admin.setLogin("admin");
+        admin.setPassword(passwordEncoder.encode("password"));
+        admin.setHistory(adminHistory);
+        admin.setRole("ADMIN");
+        admin.setEnabled(true);
+        adminHistory.setOwner(admin);
+        adminFavourite.setOwner(admin);
+        historyRepository.save(adminHistory);
+        userRepository.saveAndFlush(admin);
+        favouriteRepository.save(adminFavourite);
+    }
     public void generateBrand(){
         JSONArray jsonArray = getArray("brand.json");
         for(Object o: Objects.requireNonNull(jsonArray)){

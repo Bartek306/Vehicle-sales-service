@@ -59,6 +59,8 @@ public class UserModel implements UserDetails {
     private Boolean enabled;
 
     private String role;
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

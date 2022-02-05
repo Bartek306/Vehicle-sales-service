@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-@Service()
+@Service
 @RequiredArgsConstructor
 public class UserService {
 
@@ -64,6 +64,7 @@ public class UserService {
         userModel.setLogin(registerDto.getLogin());
         userModel.setCreatedAt(LocalDateTime.now().toString());
         userModel.setActive(true);
+        userModel.setRole("USER");
         history.setOwner(userModel);
         userModel.setHistory(history);
         favourite.setOwner(userModel);
@@ -117,5 +118,10 @@ public class UserService {
     public String getPhone(String userLogin) {
         UserModel userModel = userRepository.findByLogin(userLogin).get();
         return userModel.getPhoneNumber();
+    }
+
+    public String getRole(String usernameFromHeader) {
+        UserModel userModel = userRepository.findByLogin(usernameFromHeader).get();
+        return userModel.getRole();
     }
 }

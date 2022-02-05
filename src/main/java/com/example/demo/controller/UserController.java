@@ -49,5 +49,10 @@ public class UserController {
         return ResponseEntity.ok(userService.getPhone(userLogin));
     }
 
+    @GetMapping("get_role")
+    public ResponseEntity<String>getRole(){
+        return ResponseEntity.ok(userService.getRole(JwtUtils.getUsernameFromHeader()));
+    }
+
 }
 

@@ -152,6 +152,9 @@ public class AnnouncementService {
         UserModel userModel;
         try {
            userModel = userRepository.findByLogin(owner).get();
+           if(userModel.getRole().equals("ADMIN")){
+               return true;
+           }
         }catch (Exception e){
             return false;
         }
@@ -177,14 +180,11 @@ public class AnnouncementService {
     }
 
     public List<ResAnnouncementDto>search(String value){
-        List<Announcement> announcementList = announcementRepository.findAll();
-        Set<Announcement> set = new HashSet<>();
-        for(Announcement announcement: announcementList){
-            if(announcement.getTitle().contains(value)){
-                set.add(announcement);
-            }
+        List<Object[]> objects = announcementRepository.fullTextSearch(value);
+        List<Announcement> announcementList = new ArrayList<>();
+        for(Object[] object: objects){
+            announcementList.add(announcementRepository.getOne(Integer.parseInt(object[0].toString())));
         }
-        List<Announcement> listFromSet = new ArrayList<>(set);
-        return myUtils.mapList(listFromSet);
+        return myUtils.mapList(announcementList);
     }
 }

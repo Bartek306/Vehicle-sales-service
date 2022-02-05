@@ -15,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Entity(name = "Announcement")
 @Setter
 @Getter
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
